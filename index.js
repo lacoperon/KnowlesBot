@@ -1,13 +1,10 @@
-/*
- * Copyright 2016-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
+ex/*
+	 Note: Much of this code initially is identical to the Facebook framework for
+   sending/recieving messages in their Messenger API (IE, the Node sample code).
+	 It will be changed, so that it better serves my purposes.
 
-/* jshint node: true, devel: true */
+		-@lacoperon
+*/
 'use strict';
 
 const
@@ -21,15 +18,7 @@ var app = express();
 app.set('port', process.env.PORT || 5000);
 app.set('view engine', 'ejs');
 app.use(bodyParser.json({ verify: verifyRequestSignature }));
-app.use(express.static('public'));
 
-/*
- * Be sure to setup your config values before running this code. You can
- * set them using environment variables or modifying the config file in /config.
- *
- */
-
-// App Secret can be retrieved from the App Dashboard
 const APP_SECRET = (process.env.APP_SECRET)
 
 // Arbitrary value used to validate a webhook
@@ -47,11 +36,9 @@ if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
 }
 
 /*
- * Use your own validation token. Check that the token used in the Webhook
- * setup is the same token used here.
- *
+	Verifies webhook via Facebook Messenger Dev Platform's verification script
  */
-app.get('/webhook', function(req, res) {
+app.get('/', function(req, res) {
   if (req.query['hub.mode'] === 'subscribe' &&
       req.query['hub.verify_token'] === VALIDATION_TOKEN) {
     console.log("Validating webhook");
@@ -76,7 +63,7 @@ app.post('/', function (req, res) {
       // Iterate over each messaging event
       pageEntry.messaging.forEach(function(messagingEvent) {
         if (messagingEvent.optin) {
-          receivedAuthentication(messagingEvent);
+      		//Do Nothing, not supported
         } else if (messagingEvent.message) {
           receivedMessage(messagingEvent);
         } else if (messagingEvent.delivery) {
@@ -90,87 +77,13 @@ app.post('/', function (req, res) {
         } else {
           console.log("Webhook received unknown messagingEvent: ", messagingEvent);
         }
+				//Sends back that all worked A-OK
+				//(Protip: don't forget this part, or you'll be awake all night with
+				// annoying barrages of identical messages)
 				res.sendStatus(200);
       });
     })};
 	});
-
-
-
-/*
- * All callbacks for Messenger are POST-ed. They will be sent to the same
- * webhook. Be sure to subscribe your app to your page to receive callbacks
- * for your page.
- * https://developers.facebook.com/docs/messenger-platform/product-overview/setup#subscribe_app
- *
- */
-// app.post('/webhook', function (req, res) {
-//   var data = req.body;
-//
-//   // Make sure this is a page subscription
-//   if (data.object == 'page') {
-//     // Iterate over each entry
-//     // There may be multiple if batched
-//     data.entry.forEach(function(pageEntry) {
-//       var pageID = pageEntry.id;
-//       var timeOfEvent = pageEntry.time;
-//
-//       // Iterate over each messaging event
-//       pageEntry.messaging.forEach(function(messagingEvent) {
-//         if (messagingEvent.optin) {
-//           receivedAuthentication(messagingEvent);
-// 					res.sendStatus(200);
-//         } else if (messagingEvent.message) {
-//           receivedMessage(messagingEvent);
-// 					res.sendStatus(200);
-//         } else if (messagingEvent.delivery) {
-//           receivedDeliveryConfirmation(messagingEvent);
-// 					res.sendStatus(200);
-//         } else if (messagingEvent.postback) {
-//           receivedPostback(messagingEvent);
-// 					res.sendStatus(200);
-//         } else if (messagingEvent.read) {
-//           receivedMessageRead(messagingEvent);
-// 					res.sendStatus(200);
-//         } else if (messagingEvent.account_linking) {
-//           receivedAccountLink(messagingEvent);
-// 					res.sendStatus(200);
-//         } else {
-//           console.log("Webhook received unknown messagingEvent: ", messagingEvent);
-//         }
-//       });
-//     });
-//
-//     // Assume all went well.
-//     //
-//     // You must send back a 200, within 20 seconds, to let us know you've
-//     // successfully received the callback. Otherwise, the request will time out.
-//     res.sendStatus(200);
-//   }
-// });
-
-/*
- * This path is used for account linking. The account linking call-to-action
- * (sendAccountLinking) is pointed to this URL.
- *
- */
-app.get('/authorize', function(req, res) {
-  var accountLinkingToken = req.query.account_linking_token;
-  var redirectURI = req.query.redirect_uri;
-
-  // Authorization Code should be generated per user by the developer. This will
-  // be passed to the Account Linking callback.
-  var authCode = "1234567890";
-
-  // Redirect users to this URI on successful login
-  var redirectURISuccess = redirectURI + "&authorization_code=" + authCode;
-
-  res.render('authorize', {
-    accountLinkingToken: accountLinkingToken,
-    redirectURI: redirectURI,
-    redirectURISuccess: redirectURISuccess
-  });
-});
 
 /*
  * Verify that the callback came from Facebook. Using the App Secret from
@@ -200,35 +113,6 @@ function verifyRequestSignature(req, res, buf) {
       throw new Error("Couldn't validate the request signature.");
     }
   }
-}
-
-/*
- * Authorization Event
- *
- * The value for 'optin.ref' is defined in the entry point. For the "Send to
- * Messenger" plugin, it is the 'data-ref' field. Read more at
- * https://developers.facebook.com/docs/messenger-platform/webhook-reference/authentication
- *
- */
-function receivedAuthentication(event) {
-  var senderID = event.sender.id;
-  var recipientID = event.recipient.id;
-  var timeOfAuth = event.timestamp;
-
-  // The 'ref' field is set in the 'Send to Messenger' plugin, in the 'data-ref'
-  // The developer can set this to an arbitrary value to associate the
-  // authentication callback with the 'Send to Messenger' click event. This is
-  // a way to do account linking when the user clicks the 'Send to Messenger'
-  // plugin.
-  var passThroughParam = event.optin.ref;
-
-  console.log("Received authentication for user %d and page %d with pass " +
-    "through param '%s' at %d", senderID, recipientID, passThroughParam,
-    timeOfAuth);
-
-  // When an authentication is received, we'll send a message back to the sender
-  // to let them know it was successful.
-  sendTextMessage(senderID, "Authentication successful");
 }
 
 /*
@@ -285,60 +169,59 @@ function receivedMessage(event) {
     // keywords and send back the corresponding example. Otherwise, just echo
     // the text we received.
     switch (messageText) {
-      case 'image':
-        sendImageMessage(senderID);
-        break;
 
-      case 'gif':
-        sendGifMessage(senderID);
-        break;
-
-      case 'audio':
-        sendAudioMessage(senderID);
-        break;
-
-      case 'video':
-        sendVideoMessage(senderID);
-        break;
-
-      case 'file':
-        sendFileMessage(senderID);
-        break;
-
-      case 'button':
-        sendButtonMessage(senderID);
-        break;
-
-      case 'generic':
-        sendGenericMessage(senderID);
-        break;
-
-      case 'receipt':
-        sendReceiptMessage(senderID);
-        break;
-
-      case 'quick reply':
-        sendQuickReply(senderID);
-        break;
-
-      case 'read receipt':
-        sendReadReceipt(senderID);
-        break;
-
-      case 'typing on':
-        sendTypingOn(senderID);
-        break;
-
-      case 'typing off':
-        sendTypingOff(senderID);
-        break;
-
-      case 'account linking':
-        sendAccountLinking(senderID);
-        break;
-
-      default:
-        sendTextMessage(senderID, messageText);
+      sendTextMessage(senderID,
+          "This bot is currently under construction. Try again later.")
+      // case 'image':
+      //   sendImageMessage(senderID);
+      //   break;
+      //
+      // case 'gif':
+      //   sendGifMessage(senderID);
+      //   break;
+      //
+      // case 'audio':
+      //   sendAudioMessage(senderID);
+      //   break;
+      //
+      // case 'video':
+      //   sendVideoMessage(senderID);
+      //   break;
+      //
+      // case 'file':
+      //   sendFileMessage(senderID);
+      //   break;
+      //
+      // case 'button':
+      //   sendButtonMessage(senderID);
+      //   break;
+      //
+      // case 'generic':
+      //   sendGenericMessage(senderID);
+      //   break;
+      //
+      // case 'receipt':
+      //   sendReceiptMessage(senderID);
+      //   break;
+      //
+      // case 'quick reply':
+      //   sendQuickReply(senderID);
+      //   break;
+      //
+      // case 'read receipt':
+      //   sendReadReceipt(senderID);
+      //   break;
+      //
+      // case 'typing on':
+      //   sendTypingOn(senderID);
+      //   break;
+      //
+      // case 'typing off':
+      //   sendTypingOff(senderID);
+      //   break;
+      //
+      // default:
+      //   sendTextMessage(senderID, messageText);
     }
   } else if (messageAttachments) {
     sendTextMessage(senderID, "Message with attachment received");
@@ -795,33 +678,6 @@ function sendTypingOff(recipientId) {
       id: recipientId
     },
     sender_action: "typing_off"
-  };
-
-  callSendAPI(messageData);
-}
-
-/*
- * Send a message with the account linking call-to-action
- *
- */
-function sendAccountLinking(recipientId) {
-  var messageData = {
-    recipient: {
-      id: recipientId
-    },
-    message: {
-      attachment: {
-        type: "template",
-        payload: {
-          template_type: "button",
-          text: "Welcome. Link your account.",
-          buttons:[{
-            type: "account_link",
-            url: SERVER_URL + "/authorize"
-          }]
-        }
-      }
-    }
   };
 
   callSendAPI(messageData);
