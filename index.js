@@ -1,4 +1,4 @@
-ex/*
+/*
 	 Note: Much of this code initially is identical to the Facebook framework for
    sending/recieving messages in their Messenger API (IE, the Node sample code).
 	 It will be changed, so that it better serves my purposes.
