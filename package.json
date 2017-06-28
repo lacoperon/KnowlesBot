@@ -12,5 +12,8 @@
     "household"
   ],
   "author": "lacoperon",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.15.3"
+  }
 }
