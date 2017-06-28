@@ -169,9 +169,7 @@ function receivedMessage(event) {
     // keywords and send back the corresponding example. Otherwise, just echo
     // the text we received.
 
-      sendTextMessage(senderID,
-          "This bot is currently under construction. Try again later.");
-          return;
+      sendTextMessage(senderID,"hi");
 
           // switch (messageText) {
       // case 'image':
