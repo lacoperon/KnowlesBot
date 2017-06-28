@@ -38,7 +38,7 @@ if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
 /*
 	Verifies webhook via Facebook Messenger Dev Platform's verification script
  */
-app.get('/', function(req, res) {
+app.get('/messenger', function(req, res) {
   if (req.query['hub.mode'] === 'subscribe' &&
       req.query['hub.verify_token'] === VALIDATION_TOKEN) {
     console.log("Validating webhook");
@@ -49,7 +49,7 @@ app.get('/', function(req, res) {
   }
 });
 
-app.post('/', function (req, res) {
+app.post('/messenger', function (req, res) {
 	var data = req.body;
 
   // Make sure this is a page subscription
