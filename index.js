@@ -91,8 +91,8 @@ app.post('/', function (req, res) {
           console.log("Webhook received unknown messagingEvent: ", messagingEvent);
         }
       });
-    });
-	);
+    })};
+	});
 
 
 
