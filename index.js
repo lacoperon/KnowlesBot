@@ -170,7 +170,9 @@ function receivedMessage(event) {
     // the text we received.
 
       sendTextMessage(senderID,
-          "This bot is currently under construction. Try again later.")
+          "This bot is currently under construction. Try again later.");
+          return;
+
           // switch (messageText) {
       // case 'image':
       //   sendImageMessage(senderID);
