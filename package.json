@@ -1,0 +1,16 @@
+{
+  "name": "knowlesbot",
+  "version": "1.0.0",
+  "description": "Bot for 102 Knowles Avenue for the 2017-2018 academic year at Wesleyan University",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "messenger",
+    "bot",
+    "household"
+  ],
+  "author": "lacoperon",
+  "license": "MIT"
+}
