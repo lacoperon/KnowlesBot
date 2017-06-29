@@ -17,7 +17,7 @@ out exactly what I want to build, and setting up Continuous Integration and Buil
   * Timers and Reminders
   * Video streaming via **VLC** through command line on **Raspberry Pi** via **Chromecast**
   * **Netflix** streaming through **Tasker** and **Google Chrome** via **Chromecast**
-  * Spotify streaming through Mopidy and Bluetooth
+  * **Spotify** streaming through **Mopidy** and **Bluetooth**
   * Weird, idiosyncratic things (like Wesley Crusher Memes, etc.)
   * Shopping Lists (probably through **Redis**, for lightweight storage that
     easily expires -- I don't care if I wanted to get milk 6 weeks ago)
