@@ -1,4 +1,4 @@
-#KnowlesBot
+# KnowlesBot
 
 Welcome to the KnowlesBot README! KnowlesBot is a **Facebook Messenger Bot** that I developed
 for my roommate and I to more effectively manage living together slash the day to day things we want to do. The messenger server back end is deployed using Heroku,
@@ -12,7 +12,7 @@ taken what they provided within that sample code and tried to run with it.
 The project itself, at this point in time, is in an early stage. I'm just profiling
 out exactly what I want to build, and setting up Continuous Integration and Build Scripts so that I can more efficiently work on this in the months to come.
 
-###Current Ideas to Implement in the future:
+### Current Ideas to Implement in the future:
 
   * Timers and Reminders
   * Video streaming via **VLC** through command line on **Raspberry Pi** via **Chromecast**
@@ -35,7 +35,7 @@ For the more personal details (IE where my roommate or I are at any point in
     users will either be able to do the action, or will get a dialogue saying that
     the action itself cannot be completed.
 
-###Setup
+### Setup
 
 Note that Facebook forces you to deploy your Messenger BackEnd server out of
 an external server with proper SSL certificates set up (IE it needs to use
@@ -47,7 +47,7 @@ One can just deploy the code using `git heroku push` (after having set up
 a Heroku account, and linked Heroku to the current git repo using `heroku create`,
 installing all required module dependencies using `npm install`, and setting up your environmental variables, which I outline below).
 
-###Environmental Variables
+#### Environmental Variables
 
 To properly deploy the server, you need to set up four environmental variables.
 They are as follows:
