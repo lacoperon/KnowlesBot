@@ -5,6 +5,8 @@ for my roommate and I to more effectively manage living together slash the day t
 but there are also other components that will work through a **Raspberry Pi**
 (IE Spotify + Netflix + Youtube integration).
 
+![Worker Man Logo](https://cdn.pixabay.com/photo/2017/06/15/18/23/plumber-2406254_960_720.png "KnowlesBot")
+
 Also, the communication functions interfacing with the FB Messenger API were mostly
 themselves (sometimes verbatim) implemented in Facebook's Node sample code. I have
 taken what they provided within that sample code and tried to run with it.
