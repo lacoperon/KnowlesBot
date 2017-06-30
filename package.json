@@ -20,5 +20,8 @@
     "express": "^4.15.3",
     "https": "^1.0.0",
     "request": "^2.81.0"
+  },
+  "devDependencies": {
+    "typescript": "^2.4.1"
   }
 }
