@@ -1,0 +1,8 @@
+{
+   "compileOnSave": true,
+   "compilerOptions": {
+       "noImplicitAny" : true,
+       "rootDir": "./src",
+       "outDir": "./lib"
+   }
+}
