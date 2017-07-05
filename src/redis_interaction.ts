@@ -33,3 +33,15 @@ export function getValueFromKey(key : string) : [string, RedisResponse] {
   });
   return["", RedisResponse.Fail];
 }
+
+// 'Delete' Function for Removing Keys from within Redis Database
+export function deleteKeyFromRedis(key : string) : RedisResponse {
+  client.del(key, function(err, reply) {
+    if(!err) {
+      if(reply) {
+        return RedisResponse.OK;
+      }
+    }
+  });
+  return RedisResponse.Fail;
+}
