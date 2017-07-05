@@ -1,4 +1,5 @@
 var crypto = require('crypto');
+const APP_SECRET = (process.env.APP_SECRET);
 
 module.exports = {
   /*
