@@ -67,7 +67,7 @@ app.post('/messenger', function (req, res) {
       		//Do Nothing, not supported
         } else if (messagingEvent.message) {
           receivedMessage(messagingEvent);
-        } else if (messagingEvent.postback) {
+        } felse if (messagingEvent.postback) {
           receivedPostback(messagingEvent);
         } else if (messagingEvent.read) {
           receivedMessageRead(messagingEvent);
@@ -145,6 +145,7 @@ function receivedMessage(event) {
       default:
         sendTextMessage(senderID, messageText);
     }
+}
 }
 /*
  * Postback Event
