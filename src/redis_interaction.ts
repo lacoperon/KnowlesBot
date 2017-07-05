@@ -1,5 +1,5 @@
 import * as redis from 'redis';
-import {RedisInteraction} from './redis_types';
+import {RedisResponse} from './redis_types';
 var client = redis.createClient(process.env.REDISCLOUD_URL);
 
 
@@ -12,12 +12,24 @@ export function redisTest() {
   });
 }
 
-export function setKeyValue(key : string, value : string) : RedisInteraction {
-
+// 'Setter' Function for Key Value Pairs within Redis Database
+export function setKeyValue(key : string, value : string): RedisResponse {
   client.set(key, value, function(err, reply) {
     if(!err) {
-      console.log(reply);
+      if(reply.trim() == "OK") {
+        return RedisResponse.OK;
+      }
     }
   });
-  return RedisInteraction.OK;
+  return RedisResponse.Fail;
+}
+
+// 'Getter' Function for Key Value Pairs within Redis Database
+export function getValueFromKey(key : string) : [string, RedisResponse] {
+  client.get(key, function(err, reply) {
+    if(!err) {
+      return[reply, RedisResponse.OK];
+    }
+  });
+  return["", RedisResponse.Fail];
 }

@@ -1,4 +1,4 @@
-export enum RedisInteraction {
+export enum RedisResponse {
   OK,
   Fail
 }
