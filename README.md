@@ -51,7 +51,7 @@ installing all required module dependencies using `npm install`, and setting up 
 
 #### Environmental Variables
 
-To properly deploy the server, you need to set up five environmental variables.
+To properly deploy the server, you need to set up four environmental variables.
 They are as follows:
 
 `APP_SECRET` : This is your 'Application Secret', which you can obtain from the
@@ -75,6 +75,8 @@ Platform.
 
 To set environmental variables on your heroku server, run `heroku config:set <VARIABLE_NAME>=value`. IE, for a `MESSENGER_VALIDATION_TOKEN` of `hello`, one
 would run `heroku config:set MESSENGER_VALIDATION_TOKEN=hello`.
+
+#### Redis Cloud Setup
 
 Finally, you need to set up use of Redis Cloud through Heroku. To do so (using the free plan), run `heroku addons:create rediscloud:30`.
 Doing so creates a new environmental variable called `REDISCLOUD_URL`, which I then use to access the Redis instance in `redis_interaction.ts`.  
