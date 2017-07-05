@@ -1,4 +1,9 @@
 language: node_js
 node_js:
-  - "node"
-  - "7"
+- node
+- '7'
+deploy:
+  provider: heroku
+  app: knowlesbot
+  api_key:
+    secure: ajtv0m1nCqilGj5PsL1cTGReQPseiwsg4579FaWyRFMhoAOPIWU6WbLsZxdahtb3MS6ml/Bbal/ydnhepmwmWczMk4O3nVcdOZmY7oBWb+ARKonpFyGFYpVWV0T/rP/KpzxpvOXTGj62KwwxC15A6IGxcyOuujAZv+3r5hkdXCZZhGBbvldEG9hO4XaWcuUp3jzOM5mm1QFl9B+T7Qof1VT4X6B5fQ1bO+PL6kw253ItMoZuCo7yHCvlHevspDff8tmt+7VzRwfZxdbtCP+t+WPIBf7QcOHkO74pZnkrzno7yC4ciGE1XGS+NuePDANJncWWLuOiBalY1NmTnVH8C0K0j1E2r4IHNDCAGnGbJLa+gegMRgGWOR7mMf0iDCkwwB5uduw9WapYC3uuIZVkvEA+zd6Wj4wydFGF06q0XnSsGTj89azBrl6WZyITcHHy0fhX+UUNzJCbPSWYKlKr7MZM4mFF8v4SNkEuH326gmIe0oYisfotg3AHq9Glxd3Dn43VTjEiFGuXyt6miuXl7H1JkWWJwbY3wqo0RnqujEMNqbHxzmJPPp9PXzz7V/dQTurNt/2xodmReRbeNgmecF+++F0tF+KDfSg6HIP7G9tID4si1GVjHhCBgzSnVrOtH4I1az23IXCKqHO227tatyOPCUvDp1+4Nj5AOjNEclk=
