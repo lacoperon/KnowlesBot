@@ -2,6 +2,7 @@ import * as bodyParser from 'body-parser';
 import * as express from 'express';
 import * as https from 'https';
 import * as Messenger from './messenger';
+import * as RedisInteraction from './redis_interaction';
 
 const APP_SECRET = (process.env.APP_SECRET),
       VALIDATION_TOKEN = (process.env.MESSENGER_VALIDATION_TOKEN),
@@ -68,4 +69,6 @@ app.post('/messenger', function (req : any, res : any) {
 app.listen(app.get('port'), function () {
     console.log('Node app is running on port', app.get('port'));
 });
+
+RedisInteraction.redisTest();
 module.exports = app;
