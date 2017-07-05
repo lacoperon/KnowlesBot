@@ -1,3 +1,5 @@
+var crypto = require('crypto');
+
 module.exports = {
   /*
    * Verify that the callback came from Facebook. Using the App Secret from
