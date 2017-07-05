@@ -67,7 +67,7 @@ app.post('/messenger', function (req, res) {
       		//Do Nothing, not supported
         } else if (messagingEvent.message) {
           receivedMessage(messagingEvent);
-        } felse if (messagingEvent.postback) {
+        } else if (messagingEvent.postback) {
           receivedPostback(messagingEvent);
         } else if (messagingEvent.read) {
           receivedMessageRead(messagingEvent);
