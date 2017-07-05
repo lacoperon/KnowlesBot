@@ -4,9 +4,9 @@ var client = redis.createClient(process.env.REDISCLOUD_URL);
 
 /* testing out the redis client */
 export function redisTest() {
-  client.set("Key","Value");
-  client.get("Key", function(err, reply) {
-    console.log(reply);
+  client.set("Key","Value", function() {
+    client.get("Key", function(err, reply) {
+      console.log(reply);
+    });
   });
-
 }
