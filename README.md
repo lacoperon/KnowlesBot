@@ -1,5 +1,7 @@
 # KnowlesBot
 
+![Build Status](https://travis-ci.org/lacoperon/KnowlesBot.svg?branch=master "Build Status")
+
 Welcome to the KnowlesBot README! KnowlesBot is a **Facebook Messenger Bot** that I developed
 for my roommate and I to more effectively manage living together slash the day to day things we want to do. The messenger server back end is deployed using Heroku,
 but there are also other components that will work through a **Raspberry Pi**
