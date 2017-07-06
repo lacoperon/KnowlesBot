@@ -65,6 +65,7 @@ export function receivedMessage(event: Event) {
   if (messageText) {
     if (messageText.trim() == "help") {
       sendTextMessage(senderID, "What would you like help with?")
+      sendGenericMessage(senderID);
     } else {
       let currentState = getState(event.sender);
       if (currentState = "new") {
