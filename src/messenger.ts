@@ -193,11 +193,12 @@ function sendGenericMessage(recipientId: string) {
       id: recipientId
     },
     message: {
-      "text":  `The currently supported commands are:
+      "text":
+      `The currently supported commands are:
 
-                help: returns a list of all supported commands
+       help: returns a list of all supported commands
 
-                SORRY! That's it for now. Check back later!`,
+       SORRY! That's it for now. Check back later!`,
       "quick_replies": [
         {
           "content_type":"text",
