@@ -66,38 +66,43 @@ export function receivedMessage(event: Event) {
     if (messageText.trim().toLowerCase() == "help") {
       sendGenericMessage(senderID);
     } else {
-      let currentState = getState(event.sender);
-      if(currentState) {
-        if (currentState = "new") {
-          sendTextMessage(senderID, "Welcome to the FB Messenger Bot!");
-          setState(event.sender, "return");
-        } else if (currentState = "return") {
-          sendTextMessage(senderID, "Welcome back, friend!");
+      client.get(senderID, function(err, reply){
+        if(!err) {
+          if(reply != null) {
+            console.log(`User with id ${senderID} has state ${reply}`);
+            if(reply == "return"){
+              sendTextMessage(senderID, "Welcome back, friend!");
+            }
+          } else {
+            console.log(`User with id ${senderID} appears to be new`);
+            sendTextMessage(senderID, "Welcome, newcomer!");
+            setState(event.sender, "return");
+          }
         }
-      }
+      });
     }
   }
 }
 
-function getState(sender: Sender) : string | void {
-  var senderId = sender.id;
-
-  client.get(sender.id, function(err, reply) {
-    if (!err) {
-      if (reply != null) {
-        console.log(`User with id ${sender.id} has state ${reply}`);
-        return reply;
-      } else {
-        console.log(`User with id ${sender.id} has state 'new'`);
-        console.log(`Reply has value ${reply}`);
-        return "new";
-      }
-    } else {
-      console.log(err);
-      return "error";
-    }
-  });
-}
+// function getState(sender: Sender) : string | void {
+//   var senderId = sender.id;
+//
+//   client.get(sender.id, function(err, reply) {
+//     if (!err) {
+//       if (reply != null) {
+//         console.log(`User with id ${sender.id} has state ${reply}`);
+//         return reply;
+//       } else {
+//         console.log(`User with id ${sender.id} has state 'new'`);
+//         console.log(`Reply has value ${reply}`);
+//         return "new";
+//       }
+//     } else {
+//       console.log(err);
+//       return "error";
+//     }
+//   });
+// }
 
 function setState(sender: Sender, state : string) : void {
   client.set(sender.id, state, function() {
