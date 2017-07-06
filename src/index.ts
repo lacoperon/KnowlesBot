@@ -2,12 +2,11 @@ import * as bodyParser from 'body-parser';
 import * as express from 'express';
 import * as https from 'https';
 import * as Messenger from './messenger';
-import * as RedisInteraction from './redis_interaction';
 
-const APP_SECRET = (process.env.APP_SECRET),
-      VALIDATION_TOKEN = (process.env.MESSENGER_VALIDATION_TOKEN),
-      PAGE_ACCESS_TOKEN = (process.env.FB_PAGE_ACCESS_TOKEN),
-      SERVER_URL = (process.env.SERVER_URL);
+const APP_SECRET = (process.env.APP_SECRET) || "test",
+      VALIDATION_TOKEN = (process.env.MESSENGER_VALIDATION_TOKEN) || "test",
+      PAGE_ACCESS_TOKEN = (process.env.FB_PAGE_ACCESS_TOKEN) || "test",
+      SERVER_URL = (process.env.SERVER_URL) || "test";
 
 
 var app : any = express();
@@ -69,5 +68,4 @@ app.post('/messenger', function (req : any, res : any) {
 app.listen(app.get('port'), function () {
     console.log('Node app is running on port', app.get('port'));
 });
-RedisInteraction.setKeyValue("key","value");
 module.exports = app;
