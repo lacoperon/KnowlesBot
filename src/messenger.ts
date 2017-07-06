@@ -64,9 +64,11 @@ export function receivedMessage(event: Event) {
   // }
   if (messageText) {
     if (messageText.trim().toLowerCase() == "help") {
+      console.log(`Help command selected by user ${senderID}`);
       sendGenericMessage(senderID);
 
     } else if(messageText.trim().toLowerCase() == "forget") {
+      console.log(`Forget command selected by user ${senderID}`);
       setState(event.sender, "new");
     } else {
       client.get(senderID, function(err, reply){
@@ -213,7 +215,7 @@ function sendGenericMessage(recipientId: string) {
           "payload": "forget"
         },
         {
-          "content_type":"help",
+          "content_type":"text",
           "title" : "help",
           "payload": "help"
         }
