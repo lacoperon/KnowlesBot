@@ -67,11 +67,13 @@ export function receivedMessage(event: Event) {
       sendGenericMessage(senderID);
     } else {
       let currentState = getState(event.sender);
-      if (currentState = "new") {
-        sendTextMessage(senderID, "Welcome to the FB Messenger Bot!");
-        setState(event.sender, "return");
-      } else if (currentState = "return") {
-        sendTextMessage(senderID, "Welcome back, friend!");
+      if(currentState) {
+        if (currentState = "new") {
+          sendTextMessage(senderID, "Welcome to the FB Messenger Bot!");
+          setState(event.sender, "return");
+        } else if (currentState = "return") {
+          sendTextMessage(senderID, "Welcome back, friend!");
+        }
       }
     }
   }
@@ -83,8 +85,11 @@ function getState(sender: Sender) : string | void {
   client.get(sender.id, function(err, reply) {
     if (!err) {
       if (reply != null) {
+        console.log(`User with id ${sender.id} has state ${reply}`);
         return reply;
       } else {
+        console.log(`User with id ${sender.id} has state 'new'`);
+        console.log(`Reply has value ${reply}`);
         return "new";
       }
     } else {
@@ -183,22 +188,16 @@ function sendGenericMessage(recipientId: string) {
       id: recipientId
     },
     message: {
-      "text": "Here are some suggestions of what you can do: ",
+      "text":  `The currently supported commands are:
+
+                help: returns a list of all supported commands
+
+                SORRY! That's it for now. Check back later!`,
       "quick_replies": [
         {
           "content_type":"text",
           "title": "help",
           "payload": "help"
-        },
-        {
-          "content_type":"text",
-          "title": "Wesley Crusher",
-          "payload": "crusher"
-        },
-        {
-          "content_type":"text",
-          "title": "What's going on?",
-          "payload": "events"
         }
       ]
     }
