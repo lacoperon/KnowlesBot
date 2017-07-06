@@ -59,17 +59,19 @@ export function receivedMessage(event: Event) {
 
   if (quickReply) {
     var quickReplyPayload = quickReply.payload;
-    sendTextMessage(senderID, "Quick reply tapped");
+    sendTextMessage(senderID, "Sorry! Quick Replies aren't yet supported");
     return;
   }
   if (messageText) {
     if (messageText.trim().toLowerCase() == "help") {
-      sendTextMessage(senderID, "What would you like help with?")
       sendGenericMessage(senderID);
     } else {
       let currentState = getState(event.sender);
       if (currentState = "new") {
-        sendTextMessage(senderID, "Welcome to the FB Messenger Bot!")
+        sendTextMessage(senderID, "Welcome to the FB Messenger Bot!");
+        setState(event.sender, "return");
+      } else if (currentState = "return") {
+        sendTextMessage(senderID, "Welcome back, friend!");
       }
     }
   }
@@ -89,6 +91,12 @@ function getState(sender: Sender) : string | void {
       console.log(err);
       return "error";
     }
+  });
+}
+
+function setState(sender: Sender, state : string) : void {
+  client.set(sender.id, state, function() {
+    console.log("Set the state of user " + sender.id + "to be " + state);
   });
 }
 
@@ -175,7 +183,7 @@ function sendGenericMessage(recipientId: string) {
       id: recipientId
     },
     message: {
-      "text": "What would you like to do?",
+      "text": "Here are some suggestions of what you can do: ",
       "quick_replies": [
         {
           "content_type":"text",
