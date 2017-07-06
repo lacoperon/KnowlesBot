@@ -57,14 +57,17 @@ export function receivedMessage(event: Event) {
   var messageAttachments = message.attachments;
   var quickReply: QuickReply = message.quick_reply;
 
-  if (quickReply) {
-    var quickReplyPayload = quickReply.payload;
-    sendTextMessage(senderID, "Sorry! Quick Replies aren't yet supported");
-    return;
-  }
+  // if (quickReply) {
+  //   var quickReplyPayload = quickReply.payload;
+  //   sendTextMessage(senderID, "Sorry! Quick Replies aren't yet supported");
+  //   return;
+  // }
   if (messageText) {
     if (messageText.trim().toLowerCase() == "help") {
       sendGenericMessage(senderID);
+
+    } else if(messageText.trim().toLowerCase() == "forget") {
+      setState(event.sender, "new");
     } else {
       client.get(senderID, function(err, reply){
         if(!err) {
@@ -72,6 +75,9 @@ export function receivedMessage(event: Event) {
             console.log(`User with id ${senderID} has state ${reply}`);
             if(reply == "return"){
               sendTextMessage(senderID, "Welcome back, friend!");
+            } else if (reply == "new") {
+              sendTextMessage(senderID, "Welcome, newcomer!");
+              setState(event.sender, "return");
             }
           } else {
             console.log(`User with id ${senderID} appears to be new`);
@@ -196,13 +202,19 @@ function sendGenericMessage(recipientId: string) {
       "text":
       `The currently supported commands are:
 
-       help: returns a list of all supported commands
+       forget : makes the bot think you're a new user (for that welcome feeling)
+       help   : returns a list of all supported commands
 
        SORRY! That's it for now. Check back later!`,
       "quick_replies": [
         {
           "content_type":"text",
-          "title": "help",
+          "title": "forget",
+          "payload": "forget"
+        },
+        {
+          "content_type":"help",
+          "title" : "help",
           "payload": "help"
         }
       ]
