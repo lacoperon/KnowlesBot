@@ -71,7 +71,6 @@ export function receivedMessage(event: Event) {
         sendTextMessage(senderID, "Welcome to the FB Messenger Bot!")
       }
     }
-    sendTextMessage(senderID, messageText);
   }
 }
 
