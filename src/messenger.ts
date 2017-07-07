@@ -69,6 +69,7 @@ export function receivedMessage(event: Event) {
 
     } else if(messageText.trim().toLowerCase() == "forget") {
       console.log(`Forget command selected by user ${senderID}`);
+      sendTextMessage(senderID, "Consider yourself forgotten!");
       setState(event.sender, "new");
     } else {
       client.get(senderID, function(err, reply){
