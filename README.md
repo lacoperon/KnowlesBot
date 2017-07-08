@@ -26,9 +26,8 @@ out exactly what I want to build, and setting up Continuous Integration and Buil
   * Shopping Lists (probably through **Redis**, for lightweight storage that
     easily expires -- I don't care if I wanted to get milk 6 weeks ago)
   * Event/Exam Reminders (for extra courtesy towards someone studying for something)
-  * Some sort of ability for friends to figure out what we're up to in an
-    externally facing way (IE board game nights, parties, concerts, etc). This is
-    probably going to be implemented in **Redis**.
+  * ~~Some sort of ability for friends to figure out what we're up to in an
+    externally facing way (IE board game nights, parties, concerts, etc)..~~ -- **Not allowed by Facebook API (lame)**
   * Ability to query when certain establishments are open (IE ION Restaurant and
     Weshop in my use case, at Wesleyan University).
 
