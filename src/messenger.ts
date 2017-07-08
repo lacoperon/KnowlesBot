@@ -116,7 +116,7 @@ export function sendTextMessage(recipientId: string, messageText: string) : void
  * Send a Structured Message using the Send API.
  *
  */
-function sendHelpMessage(recipientId: string) : void {
+function sendHelpMessage(sender : Sender) : void {
   var messageTextUser =
     `Common Commands Include:
 
@@ -127,14 +127,19 @@ function sendHelpMessage(recipientId: string) : void {
    forget : makes the bot think you're a new user (for that welcome feeling)
    help   : returns a list of all supported commands`
 
-  var messageText =
+  var messageTextAdmin =
     `Admin Commands:
 
+    darmok  : sets oneself as admin (good episode!)
+    babadook: sets oneself as DJ (play music/video as you please)
+    pleb    : demotes oneself to pleb status (no more admin/DJ access)
 
-      `;
+
+    `;
+
   var messageData = {
     recipient: {
-      id: recipientId
+      id: sender.id
     },
     message: {
       "text": messageTextUser,
@@ -152,7 +157,21 @@ function sendHelpMessage(recipientId: string) : void {
       ]
     }
   };
-  callSendAPI(messageData);
+
+  client.get(toRights(sender), function(err, reply) {
+    if (!err) {
+      if(reply) {
+        switch(reply.trim().toLowerCase()) {
+          case "admin":
+            messageData.message.text = messageTextUser + messageTextAdmin;
+            break;
+          default:
+            break;
+        }
+      }
+      callSendAPI(messageData);
+    }
+  });
 }
 
 /*
@@ -198,7 +217,7 @@ export function parseMessage(messageText: string, sender: Sender) : void {
     switch (messageText.trim().toLowerCase()) {
       case "help":
         {
-          sendHelpMessage(sender.id);
+          sendHelpMessage(sender);
         }
         break;
       case "whoami":
@@ -286,14 +305,14 @@ export function parseMessage(messageText: string, sender: Sender) : void {
               if (reply != null) {
                 console.log(`User with id ${sender.id} has state ${reply}`);
                 if (reply == "default") {
-                  sendTextMessage(sender.id, "Welcome back, friend!");
+                  sendTextMessage(sender.id, "Welcome back, friend! Remember you can type 'help' to see an updated list of commands");
                 } else if (reply == "new") {
-                  sendTextMessage(sender.id, "Welcome, newcomer!");
+                  sendTextMessage(sender.id, "Welcome, newcomer! Type 'help' to see a list of commands");
                   setState(sender, "default");
                 }
               } else {
                 console.log(`User with id ${sender.id} appears to be new`);
-                sendTextMessage(sender.id, "Welcome, newcomer!");
+                sendTextMessage(sender.id, "Welcome, newcomer! Type 'help' to see a list of commands.'");
                 setState(sender, "default");
               }
             }
@@ -302,7 +321,7 @@ export function parseMessage(messageText: string, sender: Sender) : void {
         break;
       default:
         {
-          sendTextMessage(sender.id, "Sorry, I didn't understand what you were saying");
+          sendTextMessage(sender.id, "Sorry, I didn't understand what you were saying. Type 'help' to see a list of commands");
         }
     }
   }
