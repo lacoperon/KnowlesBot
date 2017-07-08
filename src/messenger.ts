@@ -194,9 +194,11 @@ export function parseMessage(messageText: string, sender: Sender) : void {
           setRights(sender, "admin");
         }
         break;
-      case "wesley":
+      case "kitty":
+      case "show me the kitty":
+      case "show me the kitties":
         {
-          sendVideoMessage(sender, "https://www.youtube.com/watch?v=OAqsU-BY58w");
+          sendPictureMessage(sender,'https://s-media-cache-ak0.pinimg.com/736x/51/bf/9c/51bf9c7fdf0d4303140c4949afd1d7b8--baby-kitty-little-kitty.jpg');
         }
         break;
       case "pleb":
@@ -332,14 +334,14 @@ export function sendTextMessage(recipientId: string, messageText: string) : void
 }
 
 
-function sendVideoMessage(sender : Sender, url : string) {
+function sendPictureMessage(sender : Sender, url : string) {
   var messageData = {
     recipient: {
       id: sender.id
     },
     message: {
       attachment: {
-        type: "video",
+        type: "image",
         payload: {
           url: url
         }
