@@ -266,6 +266,11 @@ export function parseMessage(messageText: string, sender: Sender) : void {
           setRights(sender, "admin");
         }
         break;
+      case "wesley":
+        {
+          sendTextMessage(sender.id, "https://www.youtube.com/watch?v=OAqsU-BY58w");
+        }
+        break;
       case "pleb":
         {
           sendTextMessage(sender.id, "You have been demoted to pleb status");
