@@ -68,8 +68,8 @@ const APP_SECRET = (process.env.APP_SECRET),
          },
          {
            "content_type": "text",
-           "title": "help",
-           "payload": "help"
+           "title": "whoami",
+           "payload": "whoami"
          }
        ]
      }
