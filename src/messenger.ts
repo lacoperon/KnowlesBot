@@ -37,6 +37,7 @@ const APP_SECRET = (process.env.APP_SECRET),
      `Common Commands Include:
 
     hey   : Sends you a hello message (for the warm fuzzy feels)
+    github: Returns link to this project on GitHub
     play  : Plays the specified Spotify Playlists (unimplemented)
     kitty : Sends a random cat GIF
     whoami: Returns your current state and rights status
@@ -193,6 +194,11 @@ export function parseMessage(messageText: string, sender: Sender) : void {
         {
           sendTextMessage(sender.id, "You now have Admin Privileges!");
           setRights(sender, "admin");
+        }
+        break;
+      case "github":
+        {
+          sendTextMessage(sender.id, "https://github.com/lacoperon/KnowlesBot");
         }
         break;
       case "kitty":
