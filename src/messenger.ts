@@ -163,7 +163,7 @@ function sendHelpMessage(sender : Sender) : void {
       if(reply) {
         switch(reply.trim().toLowerCase()) {
           case "admin":
-            messageData.message.text = messageTextUser + messageTextAdmin;
+            sendTextMessage(sender.id, messageTextAdmin);
             break;
           default:
             break;
