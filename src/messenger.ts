@@ -111,6 +111,20 @@ export function sendTextMessage(recipientId: string, messageText: string) : void
   callSendAPI(messageData);
 }
 
+function sendVideoMessage(sender: Sender, url : string) {
+  var messageData = {
+    recipient: {
+      id: sender.id
+    },
+    message: {
+      attachment: {
+        type: "video",
+        payload: {
+          url: url
+        }
+      }
+    }
+  };
 
 /*
  * Send a Structured Message using the Send API.
@@ -268,7 +282,7 @@ export function parseMessage(messageText: string, sender: Sender) : void {
         break;
       case "wesley":
         {
-          sendTextMessage(sender.id, "https://www.youtube.com/watch?v=OAqsU-BY58w");
+          sendVideoMessage(sender, "https://www.youtube.com/watch?v=OAqsU-BY58w");
         }
         break;
       case "pleb":
