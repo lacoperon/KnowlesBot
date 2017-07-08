@@ -64,6 +64,11 @@ export function receivedMessage(event: Event) {
             sendHelpMessage(senderID);
           }
           break;
+      case "whoami":
+          {
+            //TODO
+          }
+          break;
       case "forget":
           {
             sendTextMessage(senderID, "Consider yourself forgotten!");
@@ -82,6 +87,12 @@ export function receivedMessage(event: Event) {
           setRights(event.sender, "admin");
         }
         break;
+      case "pleb":
+      {
+          sendTextMessage(senderID, "You have been demoted to pleb status");
+          setRights(event.sender, "user");
+      }
+      break;
       case "play":
         {
         client.get(toRights(event.sender), function(err, reply){
@@ -120,12 +131,12 @@ export function receivedMessage(event: Event) {
                   sendTextMessage(senderID, "Welcome, newcomer!");
                   setState(event.sender, "default");
                 }
-              }
               } else {
                 console.log(`User with id ${senderID} appears to be new`);
                 sendTextMessage(senderID, "Welcome, newcomer!");
                 setState(event.sender, "default");
             }
+              }
           });
         }
         break;
