@@ -57,67 +57,98 @@ export function receivedMessage(event: Event) {
   var messageAttachments = message.attachments;
   var quickReply: QuickReply = message.quick_reply;
 
-  // if (quickReply) {
-  //   var quickReplyPayload = quickReply.payload;
-  //   sendTextMessage(senderID, "Sorry! Quick Replies aren't yet supported");
-  //   return;
-  // }
   if (messageText) {
-    if (messageText.trim().toLowerCase() == "help") {
-      console.log(`Help command selected by user ${senderID}`);
-      sendGenericMessage(senderID);
-
-    } else if(messageText.trim().toLowerCase() == "forget") {
-      console.log(`Forget command selected by user ${senderID}`);
-      sendTextMessage(senderID, "Consider yourself forgotten!");
-      setState(event.sender, "new");
-    } else {
-      client.get(senderID, function(err, reply){
-        if(!err) {
-          if(reply != null) {
-            console.log(`User with id ${senderID} has state ${reply}`);
-            if(reply == "return"){
-              sendTextMessage(senderID, "Welcome back, friend!");
-            } else if (reply == "new") {
-              sendTextMessage(senderID, "Welcome, newcomer!");
-              setState(event.sender, "return");
-            }
-          } else {
-            console.log(`User with id ${senderID} appears to be new`);
-            sendTextMessage(senderID, "Welcome, newcomer!");
-            setState(event.sender, "return");
+    switch(messageText.trim().toLowerCase()) {
+      case "help":
+          {
+            sendHelpMessage(senderID);
           }
+          break;
+      case "forget":
+          {
+            sendTextMessage(senderID, "Consider yourself forgotten!");
+            setState(event.sender, "new");
+          }
+          break;
+      case "babadook":
+        {
+          sendTextMessage(senderID, "You now have Music/Video Privileges!");
+          setRights(event.sender, "dj");
         }
-      });
+        break;
+      case "darmok":
+        {
+          sendTextMessage(senderID, "You now have Admin Privileges!");
+          setRights(event.sender, "admin");
+        }
+        break;
+      case "play":
+        {
+        client.get(toRights(event.sender), function(err, reply){
+              if(!err) {
+                if (reply != null) {
+                  switch(reply.trim().toLowerCase()) {
+                    case "dj":
+                    case "admin":
+                      {
+                        sendTextMessage(senderID, "Sorry DJ, Music isn't yet implemented");
+                      }
+                      break;
+                    case "user":
+                    default:
+                      {
+                        sendTextMessage(senderID, "Sorry, you don't have music privileges");
+                      }
+                      break;
+                  }
+                } else {
+                  setRights(event.sender, "user");
+                }
+              }
+            });
+        }
+        break;
+      case "hey":
+        {
+          client.get(toState(event.sender), function(err, reply){
+            if(!err) {
+              if(reply != null) {
+                console.log(`User with id ${senderID} has state ${reply}`);
+                if(reply == "default"){
+                  sendTextMessage(senderID, "Welcome back, friend!");
+                } else if (reply == "new") {
+                  sendTextMessage(senderID, "Welcome, newcomer!");
+                  setState(event.sender, "default");
+                }
+              }
+              } else {
+                console.log(`User with id ${senderID} appears to be new`);
+                sendTextMessage(senderID, "Welcome, newcomer!");
+                setState(event.sender, "default");
+            }
+          });
+        }
+        break;
+      default:
+        {
+          sendTextMessage(senderID, "Sorry, I didn't understand what you were saying");
+        }
+      }
     }
-  }
 }
 
-// function getState(sender: Sender) : string | void {
-//   var senderId = sender.id;
-//
-//   client.get(sender.id, function(err, reply) {
-//     if (!err) {
-//       if (reply != null) {
-//         console.log(`User with id ${sender.id} has state ${reply}`);
-//         return reply;
-//       } else {
-//         console.log(`User with id ${sender.id} has state 'new'`);
-//         console.log(`Reply has value ${reply}`);
-//         return "new";
-//       }
-//     } else {
-//       console.log(err);
-//       return "error";
-//     }
-//   });
-// }
-
 function setState(sender: Sender, state : string) : void {
-  client.set(sender.id, state, function() {
+  client.set(toState(sender), state, function() {
     console.log("Set the state of user " + sender.id + "to be " + state);
   });
 }
+
+function setRights(sender: Sender, position : string) : void {
+  client.set(toRights(sender), position, function() {
+    console.log("Set the rights of user " + sender.id + "to be " + position);
+  });
+}
+
 
 
 /*
@@ -158,57 +189,27 @@ export function sendTextMessage(recipientId: string, messageText: string) {
   callSendAPI(messageData);
 }
 
+
 /*
- * Send a button message using the Send API.
+ * Send a Structured Message using the Send API.
  *
  */
-function sendButtonMessage(recipientId: string) {
+function sendHelpMessage(recipientId: string) {
+  var messageTextUser =
+  `The currently supported commands are:
+
+   forget : makes the bot think you're a new user (for that welcome feeling)
+   help   : returns a list of all supported commands`;
+
+  var messageText =
+      `Admin Commands:
+      `;
   var messageData = {
     recipient: {
       id: recipientId
     },
     message: {
-      attachment: {
-        type: "template",
-        payload: {
-          template_type: "button",
-          text: "This is test text",
-          buttons: [{
-            type: "web_url",
-            url: "https://www.oculus.com/en-us/rift/",
-            title: "Open Web URL"
-          }, {
-              type: "postback",
-              title: "Trigger Postback",
-              payload: "DEVELOPER_DEFINED_PAYLOAD"
-            }, {
-              type: "phone_number",
-              title: "Call Phone Number",
-              payload: "+16505551234"
-            }]
-        }
-      }
-    }
-  };
-  callSendAPI(messageData);
-}
-/*
- * Send a Structured Message (Generic Message type) using the Send API.
- *
- */
-function sendGenericMessage(recipientId: string) {
-  var messageData = {
-    recipient: {
-      id: recipientId
-    },
-    message: {
-      "text":
-      `The currently supported commands are:
-
-       forget : makes the bot think you're a new user (for that welcome feeling)
-       help   : returns a list of all supported commands
-
-       SORRY! That's it for now. Check back later!`,
+      "text": messageTextUser,
       "quick_replies": [
         {
           "content_type":"text",
@@ -252,4 +253,12 @@ export function callSendAPI(messageData: any) {
       console.error("Failed calling Send API", response.statusCode, response.statusMessage, body.error);
     }
   });
+}
+
+function toState(sender : Sender) {
+  return `STATE_${sender.id}`;
+}
+
+function toRights(sender : Sender) {
+  return `RIGHTS_${sender.id}`;
 }
