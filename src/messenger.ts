@@ -40,13 +40,12 @@ export function verifyRequestSignature(req: any, res: any, buf: any): void {
 }
 
 
-export function receivedMessage(event: Event) {
-  var senderID = event.sender.id;
+export function receivedMessage(event: Event) : void {
   var recipientID = event.recipient.id;
   var timeOfMessage = event.timestamp;
   var message = event.message;
   // console.log("Received message for user %d and page %d at %d with message:",
-  //   senderID, recipientID, timeOfMessage);
+  //   sender.id, recipientID, timeOfMessage);
   // console.log(JSON.stringify(message));
   var isEcho = message.is_echo;
   var messageId = message.mid;
@@ -57,104 +56,16 @@ export function receivedMessage(event: Event) {
   var messageAttachments = message.attachments;
   var quickReply: QuickReply = message.quick_reply;
 
-  if (messageText) {
-    switch(messageText.trim().toLowerCase()) {
-      case "help":
-          {
-            sendHelpMessage(senderID);
-          }
-          break;
-      case "whoami":
-          {
-            //TODO
-          }
-          break;
-      case "forget":
-          {
-            sendTextMessage(senderID, "Consider yourself forgotten!");
-            setState(event.sender, "new");
-          }
-          break;
-      case "babadook":
-        {
-          sendTextMessage(senderID, "You now have Music/Video Privileges!");
-          setRights(event.sender, "dj");
-        }
-        break;
-      case "darmok":
-        {
-          sendTextMessage(senderID, "You now have Admin Privileges!");
-          setRights(event.sender, "admin");
-        }
-        break;
-      case "pleb":
-      {
-          sendTextMessage(senderID, "You have been demoted to pleb status");
-          setRights(event.sender, "user");
-      }
-      break;
-      case "play":
-        {
-        client.get(toRights(event.sender), function(err, reply){
-              if(!err) {
-                if (reply != null) {
-                  switch(reply.trim().toLowerCase()) {
-                    case "dj":
-                    case "admin":
-                      {
-                        sendTextMessage(senderID, "Sorry DJ, Music isn't yet implemented");
-                      }
-                      break;
-                    case "user":
-                    default:
-                      {
-                        sendTextMessage(senderID, "Sorry, you don't have music privileges");
-                      }
-                      break;
-                  }
-                } else {
-                  setRights(event.sender, "user");
-                }
-              }
-            });
-        }
-        break;
-      case "hey":
-        {
-          client.get(toState(event.sender), function(err, reply){
-            if(!err) {
-              if(reply != null) {
-                console.log(`User with id ${senderID} has state ${reply}`);
-                if(reply == "default"){
-                  sendTextMessage(senderID, "Welcome back, friend!");
-                } else if (reply == "new") {
-                  sendTextMessage(senderID, "Welcome, newcomer!");
-                  setState(event.sender, "default");
-                }
-              } else {
-                console.log(`User with id ${senderID} appears to be new`);
-                sendTextMessage(senderID, "Welcome, newcomer!");
-                setState(event.sender, "default");
-            }
-              }
-          });
-        }
-        break;
-      default:
-        {
-          sendTextMessage(senderID, "Sorry, I didn't understand what you were saying");
-        }
-      }
-    }
+  parseMessage(message.text, event.sender);
 }
 
-function setState(sender: Sender, state : string) : void {
+function setState(sender: Sender, state: string): void {
   client.set(toState(sender), state, function() {
     console.log("Set the state of user " + sender.id + "to be " + state);
   });
 }
 
-function setRights(sender: Sender, position : string) : void {
+function setRights(sender: Sender, position: string): void {
   client.set(toRights(sender), position, function() {
     console.log("Set the rights of user " + sender.id + "to be " + position);
   });
@@ -169,25 +80,25 @@ function setRights(sender: Sender, position : string) : void {
  * https://developers.facebook.com/docs/messenger-platform/webhook-reference/postback-received
  *
  */
-export function receivedPostback(event: Event) {
-  var senderID = event.sender.id;
+export function receivedPostback(event: Event) : void {
+  var sender= event.sender;
   var recipientID = event.recipient.id;
   var timeOfPostback = event.timestamp;
   // The 'payload' param is a developer-defined field which is set in a postback
   // button for Structured Messages.
   var payload = event.postback.payload;
   console.log("Received postback for user %d and page %d with payload '%s' " +
-    "at %d", senderID, recipientID, payload, timeOfPostback);
+    "at %d", sender.id, recipientID, payload, timeOfPostback);
   // When a postback is called, we'll send a message back to the sender to
   // let them know it was successful
-  sendTextMessage(senderID, "Postback called");
+  sendTextMessage(sender.id, "Postback called");
 }
 
 /*
 * Send a text message using the Send API.
 *
 */
-export function sendTextMessage(recipientId: string, messageText: string) {
+export function sendTextMessage(recipientId: string, messageText: string) : void {
   var messageData = {
     recipient: {
       id: recipientId
@@ -205,15 +116,21 @@ export function sendTextMessage(recipientId: string, messageText: string) {
  * Send a Structured Message using the Send API.
  *
  */
-function sendHelpMessage(recipientId: string) {
+function sendHelpMessage(recipientId: string) : void {
   var messageTextUser =
-  `The currently supported commands are:
+    `Common Commands Include:
+
+   hey   : Sends you a hello message (for the warm fuzzy feels)
+   play  : Plays the specified Spotify Playlists (unimplemented)
+   whoami: Returns your current state and rights status
 
    forget : makes the bot think you're a new user (for that welcome feeling)
-   help   : returns a list of all supported commands`;
+   help   : returns a list of all supported commands`
 
   var messageText =
-      `Admin Commands:
+    `Admin Commands:
+
+
       `;
   var messageData = {
     recipient: {
@@ -223,13 +140,13 @@ function sendHelpMessage(recipientId: string) {
       "text": messageTextUser,
       "quick_replies": [
         {
-          "content_type":"text",
+          "content_type": "text",
           "title": "forget",
           "payload": "forget"
         },
         {
-          "content_type":"text",
-          "title" : "help",
+          "content_type": "text",
+          "title": "help",
           "payload": "help"
         }
       ]
@@ -265,11 +182,128 @@ export function callSendAPI(messageData: any) {
     }
   });
 }
-
-function toState(sender : Sender) {
+// Function that converts a Sender object to its corresponding State string (for Redis)
+function toState(sender: Sender) : string {
   return `STATE_${sender.id}`;
 }
 
-function toRights(sender : Sender) {
+// Function that converts a Sender object to its corresponding Rights string (for Redis)
+function toRights(sender: Sender) : string {
   return `RIGHTS_${sender.id}`;
+}
+
+
+export function parseMessage(messageText: string, sender: Sender) : void {
+  if (messageText) {
+    switch (messageText.trim().toLowerCase()) {
+      case "help":
+        {
+          sendHelpMessage(sender.id);
+        }
+        break;
+      case "whoami":
+        {
+          client.get(toState(sender), function(err, reply) {
+            if(!err) {
+              var state = "";
+              if(reply) {
+                state = reply.trim();
+              } else {
+                state = "default";
+              }
+              sendTextMessage(sender.id, `You have State: ${state}`);
+            }
+          });
+
+          client.get(toRights(sender), function(err, reply) {
+            if(!err) {
+              var position = "";
+              if(reply) {
+                position = reply.trim();
+              } else {
+                position = "default";
+              }
+              sendTextMessage(sender.id, `You have Role: ${position}`);
+            }
+          });
+          sendTextMessage(sender.id, `You have Sender ID: ${sender.id}`);
+        }
+        break;
+      case "forget":
+        {
+          sendTextMessage(sender.id, "Consider yourself forgotten!");
+          setState(sender, "new");
+        }
+        break;
+      case "babadook":
+        {
+          sendTextMessage(sender.id, "You now have Music/Video Privileges!");
+          setRights(sender, "dj");
+        }
+        break;
+      case "darmok":
+        {
+          sendTextMessage(sender.id, "You now have Admin Privileges!");
+          setRights(sender, "admin");
+        }
+        break;
+      case "pleb":
+        {
+          sendTextMessage(sender.id, "You have been demoted to pleb status");
+          setRights(sender, "user");
+        }
+        break;
+      case "play":
+        {
+          client.get(toRights(sender), function(err, reply) {
+            if (!err) {
+              if (reply != null) {
+                switch (reply.trim().toLowerCase()) {
+                  case "dj":
+                  case "admin":
+                    {
+                      sendTextMessage(sender.id, "Sorry DJ, Music isn't yet implemented");
+                    }
+                    break;
+                  case "user":
+                  default:
+                    {
+                      sendTextMessage(sender.id, "Sorry, you don't have music privileges");
+                    }
+                    break;
+                }
+              } else {
+                setRights(sender, "user");
+              }
+            }
+          });
+        }
+        break;
+      case "hey":
+        {
+          client.get(toState(sender), function(err, reply) {
+            if (!err) {
+              if (reply != null) {
+                console.log(`User with id ${sender.id} has state ${reply}`);
+                if (reply == "default") {
+                  sendTextMessage(sender.id, "Welcome back, friend!");
+                } else if (reply == "new") {
+                  sendTextMessage(sender.id, "Welcome, newcomer!");
+                  setState(sender, "default");
+                }
+              } else {
+                console.log(`User with id ${sender.id} appears to be new`);
+                sendTextMessage(sender.id, "Welcome, newcomer!");
+                setState(sender, "default");
+              }
+            }
+          });
+        }
+        break;
+      default:
+        {
+          sendTextMessage(sender.id, "Sorry, I didn't understand what you were saying");
+        }
+    }
+  }
 }
