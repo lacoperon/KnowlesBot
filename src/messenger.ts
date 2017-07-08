@@ -38,7 +38,7 @@ const APP_SECRET = (process.env.APP_SECRET),
 
     hey   : Sends you a hello message (for the warm fuzzy feels)
     play  : Plays the specified Spotify Playlists (unimplemented)
-    kitty : Sends a kitty picture (only one currently, but there will be more!)
+    kitty : Sends a random cat GIF
     whoami: Returns your current state and rights status
 
     forget : makes the bot think you're a new user (for that welcome feeling)
@@ -63,8 +63,8 @@ const APP_SECRET = (process.env.APP_SECRET),
        "quick_replies": [
          {
            "content_type": "text",
-           "title": "forget",
-           "payload": "forget"
+           "title": "kitty",
+           "payload": "kitty"
          },
          {
            "content_type": "text",
@@ -199,6 +199,10 @@ export function parseMessage(messageText: string, sender: Sender) : void {
       case "kitties":
       case "show me the kitty":
       case "show me the kitties":
+      case "cat":
+      case "cats":
+      case "show me the cats":
+      case "show me the cat":
         {
           sendPictureMessage(sender,'http://thecatapi.com/api/images/get?format=src&type=gif');
         }
