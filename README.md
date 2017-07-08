@@ -16,6 +16,12 @@ taken what they provided within that sample code and tried to run with it.
 The project itself, at this point in time, is in an early stage. I'm just profiling
 out exactly what I want to build, and setting up Continuous Integration and Build Scripts so that I can more efficiently work on this in the months to come.
 
+### Implemented Stuff
+  * Role / State tracking via Redis
+  * Kitty Image Sending (TODO: Add an RNG component, sending more than one type of Kitty)
+  * Secret Functions to Promote People to Different Roles (IE DJ, Admin)
+  * whoami function to give your state, role and Facebook ID
+
 ### Current Ideas to Implement in the future:
 
   * Timers and Reminders

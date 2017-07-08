@@ -38,13 +38,14 @@ const APP_SECRET = (process.env.APP_SECRET),
 
     hey   : Sends you a hello message (for the warm fuzzy feels)
     play  : Plays the specified Spotify Playlists (unimplemented)
+    kitty : Sends a kitty picture (only one currently, but there will be more!)
     whoami: Returns your current state and rights status
 
     forget : makes the bot think you're a new user (for that welcome feeling)
     help   : returns a list of all supported commands`
 
    var messageTextAdmin =
-     `Admin Commands:
+      `Admin Commands:
 
      darmok  : sets oneself as admin (good episode!)
      babadook: sets oneself as DJ (play music/video as you please)
@@ -195,6 +196,7 @@ export function parseMessage(messageText: string, sender: Sender) : void {
         }
         break;
       case "kitty":
+      case "kitties":
       case "show me the kitty":
       case "show me the kitties":
         {
