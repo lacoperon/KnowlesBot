@@ -200,7 +200,7 @@ export function parseMessage(messageText: string, sender: Sender) : void {
       case "show me the kitty":
       case "show me the kitties":
         {
-          sendPictureMessage(sender,'http://thecatapi.com/api/images/get?format=src&type=gif');
+          sendPictureMessage(sender,'http://thecatapi.com/api/images/get?format=src&type=jpg');
         }
         break;
       case "pleb":
