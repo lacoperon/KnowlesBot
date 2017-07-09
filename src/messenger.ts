@@ -18,23 +18,23 @@ const APP_SECRET = (process.env.APP_SECRET),
  */
 
 
- // Function that converts a Sender object to its corresponding State string (for Redis)
- function toState(sender: Sender) : string {
-   return `STATE_${sender.id}`;
- }
+// Function that converts a Sender object to its corresponding State string (for Redis)
+function toState(sender: Sender): string {
+  return `STATE_${sender.id}`;
+}
 
- // Function that converts a Sender object to its corresponding Rights string (for Redis)
- function toRights(sender: Sender) : string {
-   return `RIGHTS_${sender.id}`;
- }
+// Function that converts a Sender object to its corresponding Rights string (for Redis)
+function toRights(sender: Sender): string {
+  return `RIGHTS_${sender.id}`;
+}
 
- /*
-  * Send a Structured Message using the Send API.
-  *
-  */
- function sendHelpMessage(sender : Sender) : void {
-   var messageTextUser =
-     `Common Commands Include:
+/*
+ * Send a Structured Message using the Send API.
+ *
+ */
+function sendHelpMessage(sender: Sender): void {
+  var messageTextUser =
+    `Common Commands Include:
 
     hey   : Sends you a hello message (for the warm fuzzy feels)
     github: Returns link to this project on GitHub
@@ -45,8 +45,8 @@ const APP_SECRET = (process.env.APP_SECRET),
     forget : makes the bot think you're a new user (for that welcome feeling)
     help   : returns a list of all supported commands`
 
-   var messageTextAdmin =
-      `Admin Commands:
+  var messageTextAdmin =
+    `Admin Commands:
 
      darmok  : sets oneself as admin (good episode!)
      babadook: sets oneself as DJ (play music/video as you please)
@@ -55,70 +55,70 @@ const APP_SECRET = (process.env.APP_SECRET),
 
      `;
 
-   var messageData = {
-     recipient: {
-       id: sender.id
-     },
-     message: {
-       "text": messageTextUser,
-       "quick_replies": [
-         {
-           "content_type": "text",
-           "title": "kitty",
-           "payload": "kitty"
-         },
-         {
-           "content_type": "text",
-           "title": "whoami",
-           "payload": "whoami"
-         }
-       ]
-     }
-   };
+  var messageData = {
+    recipient: {
+      id: sender.id
+    },
+    message: {
+      "text": messageTextUser,
+      "quick_replies": [
+        {
+          "content_type": "text",
+          "title": "kitty",
+          "payload": "kitty"
+        },
+        {
+          "content_type": "text",
+          "title": "whoami",
+          "payload": "whoami"
+        }
+      ]
+    }
+  };
 
-   client.get(toRights(sender), function(err, reply) {
-     if (!err) {
-       if(reply) {
-         switch(reply.trim().toLowerCase()) {
-           case "admin":
-             sendTextMessage(sender.id, messageTextAdmin);
-             break;
-           default:
-             break;
-         }
-       }
-       callSendAPI(messageData);
-     }
-   });
- }
+  client.get(toRights(sender), function(err, reply) {
+    if (!err) {
+      if (reply) {
+        switch (reply.trim().toLowerCase()) {
+          case "admin":
+            sendTextMessage(sender.id, messageTextAdmin);
+            break;
+          default:
+            break;
+        }
+      }
+      callSendAPI(messageData);
+    }
+  });
+}
 
- /*
- * Call the Send API. The message data goes in the body. If successful, we'll
- * get the message id in a response
- *
- */
- export function callSendAPI(messageData: any) {
-   request({
-     uri: 'https://graph.facebook.com/v2.6/me/messages',
-     qs: { access_token: PAGE_ACCESS_TOKEN },
-     method: 'POST',
-     json: messageData
-   }, function(error: any, response: any, body: any) {
-     if (!error && response.statusCode == 200) {
-       var recipientId = body.recipient_id;
-       var messageId = body.message_id;
-       if (messageId) {
-         console.log("Successfully sent message with id %s to recipient %s", messageId, recipientId);
-       }
-       else {
-         console.log("Successfully called Send API for recipient %s", recipientId);
-       }
-     }
-     else {
-       console.error("Failed calling Send API", response.statusCode, response.statusMessage, body.error);
-     }
-   });
- }
+/*
+* Call the Send API. The message data goes in the body. If successful, we'll
+* get the message id in a response
+*
+*/
+export function callSendAPI(messageData: any) {
+  request({
+    uri: 'https://graph.facebook.com/v2.6/me/messages',
+    qs: { access_token: PAGE_ACCESS_TOKEN },
+    method: 'POST',
+    json: messageData
+  }, function(error: any, response: any, body: any) {
+    if (!error && response.statusCode == 200) {
+      var recipientId = body.recipient_id;
+      var messageId = body.message_id;
+      if (messageId) {
+        console.log("Successfully sent message with id %s to recipient %s", messageId, recipientId);
+      }
+      else {
+        console.log("Successfully called Send API for recipient %s", recipientId);
+      }
+    }
+    else {
+      console.error("Failed calling Send API", response.statusCode, response.statusMessage, body.error);
+    }
+  });
+}
 
 export function verifyRequestSignature(req: any, res: any, buf: any): void {
   var signature = req.headers["x-hub-signature"];
@@ -142,7 +142,7 @@ export function verifyRequestSignature(req: any, res: any, buf: any): void {
   }
 }
 
-export function parseMessage(messageText: string, sender: Sender) : void {
+export function parseMessage(messageText: string, sender: Sender): void {
   if (messageText) {
     switch (messageText.trim().toLowerCase()) {
       case "help":
@@ -153,9 +153,9 @@ export function parseMessage(messageText: string, sender: Sender) : void {
       case "whoami":
         {
           client.get(toState(sender), function(err, reply) {
-            if(!err) {
+            if (!err) {
               var state = "";
-              if(reply) {
+              if (reply) {
                 state = reply.trim();
               } else {
                 state = "default";
@@ -165,9 +165,9 @@ export function parseMessage(messageText: string, sender: Sender) : void {
           });
 
           client.get(toRights(sender), function(err, reply) {
-            if(!err) {
+            if (!err) {
               var position = "";
-              if(reply) {
+              if (reply) {
                 position = reply.trim();
               } else {
                 position = "default";
@@ -210,8 +210,11 @@ export function parseMessage(messageText: string, sender: Sender) : void {
       case "show me the cats":
       case "show me the cat":
         {
-          sendPictureMessage(sender,'http://thecatapi.com/api/images/get?format=src&type=gif');
+          sendPictureMessage(sender, 'http://thecatapi.com/api/images/get?format=src&type=gif');
         }
+        break;
+      case "wesley":
+        sendYoutubeVideo(sender, "");
         break;
       case "pleb":
         {
@@ -274,7 +277,7 @@ export function parseMessage(messageText: string, sender: Sender) : void {
   }
 }
 
-export function receivedMessage(event: Event) : void {
+export function receivedMessage(event: Event): void {
   var recipientID = event.recipient.id;
   var timeOfMessage = event.timestamp;
   var message = event.message;
@@ -314,8 +317,8 @@ function setRights(sender: Sender, position: string): void {
  * https://developers.facebook.com/docs/messenger-platform/webhook-reference/postback-received
  *
  */
-export function receivedPostback(event: Event) : void {
-  var sender= event.sender;
+export function receivedPostback(event: Event): void {
+  var sender = event.sender;
   var recipientID = event.recipient.id;
   var timeOfPostback = event.timestamp;
   // The 'payload' param is a developer-defined field which is set in a postback
@@ -332,7 +335,7 @@ export function receivedPostback(event: Event) : void {
 * Send a text message using the Send API.
 *
 */
-export function sendTextMessage(recipientId: string, messageText: string) : void {
+export function sendTextMessage(recipientId: string, messageText: string): void {
   var messageData = {
     recipient: {
       id: recipientId
@@ -346,7 +349,7 @@ export function sendTextMessage(recipientId: string, messageText: string) : void
 }
 
 
-function sendPictureMessage(sender : Sender, url : string) {
+function sendPictureMessage(sender: Sender, url: string) {
   var messageData = {
     recipient: {
       id: sender.id
@@ -362,4 +365,44 @@ function sendPictureMessage(sender : Sender, url : string) {
   };
 
   callSendAPI(messageData);
+}
+
+function sendYoutubeVideo(sender: Sender, url: string) {
+  var messageData = {
+    "recipient": {
+      "id": sender.id
+    }, "message": {
+      "attachment": {
+        "type": "template",
+        "payload": {
+          "template_type": "list",
+          "top_element_style": "compact",
+          "elements": [
+            {
+              "title": "Classic White T-Shirt",
+              "image_url": "https://peterssendreceiveapp.ngrok.io/img/white-t-shirt.png",
+              "subtitle": "100% Cotton, 200% Comfortable",
+              "default_action": {
+                "type": "web_url",
+                "url": "https://peterssendreceiveapp.ngrok.io/view?item=100",
+                "messenger_extensions": true,
+                "webview_height_ratio": "tall",
+                "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+              },
+              "buttons": [
+                {
+                  "title": "Buy",
+                  "type": "web_url",
+                  "url": "https://peterssendreceiveapp.ngrok.io/shop?item=100",
+                  "messenger_extensions": true,
+                  "webview_height_ratio": "tall",
+                  "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
 }
