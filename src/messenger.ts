@@ -177,28 +177,15 @@ export function parseMessage(messageText: string, sender: Sender): void {
               if(commands[command].alts[i] == messageText.trim().toLowerCase()) {
                 console.log(`touch4 for ${command} has alt at index ${i} which is ${messageText}`);
                 commands[command].do(messageText, sender);
+                return;
               }
             }
           }
         }
       }
     }
+    sendTextMessage(sender.id, "Sorry, I didn't understand what you were saying. Type 'help' to see a list of commands");
     switch (messageText) {
-      case "help":
-        {
-          commands.help.  do(messageText, sender);
-        }
-        break;
-      case "whoami":
-        {
-          commands.whoami.do(messageText, sender);
-        }
-        break;
-      case "forget":
-        {
-          commands.forget.do(messageText, sender);
-        }
-        break;
       case "babadook":
         {
           sendTextMessage(sender.id, "You now have Music/Video Privileges!");
@@ -284,10 +271,6 @@ export function parseMessage(messageText: string, sender: Sender): void {
           });
         }
         break;
-      default:
-        {
-          sendTextMessage(sender.id, "Sorry, I didn't understand what you were saying. Type 'help' to see a list of commands");
-        }
     }
   }
 }
