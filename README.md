@@ -83,6 +83,19 @@ Platform.
 To set environmental variables on your heroku server, run `heroku config:set <VARIABLE_NAME>=value`. IE, for a `MESSENGER_VALIDATION_TOKEN` of `hello`, one
 would run `heroku config:set MESSENGER_VALIDATION_TOKEN=hello`.
 
+#### External URL Whitelisting
+
+Facebook requires that you whitelist all domains you link to externally through your Facebook bot.
+If you do such a thing (IE in my 'wesley' function), you must whitelist it by running the following command
+
+`curl -X POST -H "Content-Type: application/json" -d '{
+  "setting_type" : "domain_whitelisting",
+  "whitelisted_domains" : ["https://petersfancyapparel.com"],
+  "domain_action_type": "add"
+}' "https://graph.facebook.com/v2.6/me/thread_settings?access_token=PAGE_ACCESS_TOKEN"`
+
+in which
+
 #### Redis Cloud Setup
 
 Finally, you need to set up use of Redis Cloud through Heroku. To do so (using the free plan), run `heroku addons:create rediscloud:30`.

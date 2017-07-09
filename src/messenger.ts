@@ -6,7 +6,8 @@ import * as redis from 'redis';
 var client = redis.createClient(process.env.REDISCLOUD_URL);
 import {CommandList} from './commands';
 
-import {Sender, Recipient, Event, Message, QuickReply, Referral, Postback} from './messenger_types';
+import {Sender, Recipient, Event, Message, QuickReply, Referral, Postback,
+        YoutubeSplash} from './messenger_types';
 
 const APP_SECRET        = (process.env.APP_SECRET),
       VALIDATION_TOKEN  = (process.env.MESSENGER_VALIDATION_TOKEN),
@@ -33,7 +34,7 @@ function toRights(sender: Sender): string {
  * Send a Structured Message using the Send API.
  *
  */
-function sendHelpMessage(sender: Sender): void {
+export function sendHelpMessage(sender: Sender): void {
   var messageTextUser =
     `Common Commands Include:
 
@@ -216,7 +217,7 @@ export function parseMessage(messageText: string, sender: Sender): void {
         }
         break;
       case "wesley":
-        CommandList.commands.wesley.messenger_actions(messageText, sender);
+        CommandList.commands.wesley.do(messageText, sender);
         break;
       case "pleb":
         {
@@ -365,6 +366,54 @@ function sendPictureMessage(sender: Sender, url: string) {
       }
     }
   };
+
+  callSendAPI(messageData);
+}
+
+
+
+
+export function sendYoutubeMessage(sender: Sender, info : YoutubeSplash) {
+
+  var subtitle = info.subtitle || "",
+      title = info.title || "",
+      fallback_url = info.fallback_url || "";
+
+  var messageData =
+  {
+  "recipient":{
+      "id": sender.id
+    },
+    "message":{
+      "attachment":{
+        "type":"template",
+        "payload":{
+          "template_type":"generic",
+          "elements":[
+             {
+              "title": title,
+              "image_url": info.image_url,
+              "subtitle":"Truly a Christmas Miracle",
+              "default_action": {
+                "type": "web_url",
+                "url": info.youtube_url,
+                "messenger_extensions": true,
+                "webview_height_ratio": "tall",
+                "fallback_url": info.fallback_url
+              },
+              "buttons":[
+                {
+                  "type":"web_url",
+                  "url":info.youtube_url,
+                  "title":"Watch"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
 
   callSendAPI(messageData);
 }
