@@ -43,7 +43,23 @@ export var CommandList : CommandList = {
 
      -@lacoperon */
   commands :
-    { "forget" : {
+    { "babadook" : {
+        description: "promotes user to DJ status (LONG LIVE THE BILAND)",
+        is_secret: true,
+        do: function(messageText : string, sender : Sender) {
+          sendTextMessage(sender.id, "You now have Music/Video Privileges!");
+          setRights(sender, "dj");
+        }
+      },
+      "darmok" : {
+        description: "promotes the user to admin status (good episode!)",
+        is_secret : true,
+        do : function(messageText : string, sender : Sender) {
+          sendTextMessage(sender.id, "You now have Admin Privileges!");
+          setRights(sender, "admin");
+        }
+      },
+      "forget" : {
         description: "'forgets' user ever messaged the bot",
         is_secret : false,
         do : function(messageText : string, sender : Sender) {
@@ -100,6 +116,42 @@ export var CommandList : CommandList = {
         alts: ['kitty','kitties','cat','cats', 'show me the cat','show me the cats','show me the kitty', 'show me the kitties'],
         do : function(messageText : string, sender : Sender) {
           sendPictureMessage(sender, 'http://thecatapi.com/api/images/get?format=src&type=gif');
+        }
+      },
+      "play" : {
+        description: "Plays music on Spotify (not currently implemented)",
+        is_secret : false,
+        do : function(messageText : string, sender : Sender) {
+          client.get(toRights(sender), function(err, reply) {
+            if (!err) {
+              if (reply != null) {
+                switch (reply.trim().toLowerCase()) {
+                  case "dj":
+                  case "admin":
+                    {
+                      sendTextMessage(sender.id, "Sorry DJ, Music isn't yet implemented");
+                    }
+                    break;
+                  case "user":
+                  default:
+                    {
+                      sendTextMessage(sender.id, "Sorry, you don't have music privileges");
+                    }
+                    break;
+                }
+              } else {
+                setRights(sender, "user");
+              }
+            }
+          });
+        }
+      },
+      "pleb" : {
+        description: "demotes user to plebian status",
+        is_secret : true,
+        do : function(messageText : string, sender : Sender) {
+          sendTextMessage(sender.id, "You have been demoted to pleb status");
+          setRights(sender, "user");
         }
       },
       "wesley" : {
