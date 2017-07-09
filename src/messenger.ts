@@ -176,7 +176,7 @@ export function parseMessage(messageText: string, sender: Sender): void {
               console.log(`touch3.5 for alt at index ${i}`);
               if(commands[command].alts[i] == messageText.trim().toLowerCase()) {
                 console.log(`touch4 for ${command} has alt at index ${i} which is ${messageText}`);
-                commands.command.do(messageText, sender);
+                commands[command].do(messageText, sender);
               }
             }
           }
