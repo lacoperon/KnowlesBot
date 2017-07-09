@@ -147,14 +147,14 @@ export function verifyRequestSignature(req: any, res: any, buf: any): void {
 }
 
 export function parseMessage(messageText: string, sender: Sender): void {
-  //Splits messages on ;, allowing for multiple commands at once
-  if(messageText.indexOf(";") !== -1) {
-    var messageArray = messageText.split(";");
-    for (var message in messageArray) {
-      parseMessage(message, sender);
-    }
-    return;
-  }
+  // //Splits messages on ;, allowing for multiple commands at once
+  // if(messageText.indexOf(";") !== -1) {
+  //   var messageArray = messageText.split(";");
+  //   for (var message in messageArray) {
+  //     parseMessage(message, sender);
+  //   }
+  //   return;
+  // }
 
   if (messageText && messageText != "") {
     messageText = messageText.trim().toLowerCase();
