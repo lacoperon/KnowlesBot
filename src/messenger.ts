@@ -190,42 +190,7 @@ export function parseMessage(messageText: string, sender: Sender): void {
       }
     }
     sendTextMessage(sender.id, "Sorry, I didn't understand what you were saying. Type 'help' to see a list of commands");
-    switch (messageText) {
-      case "babadook":
-        {
-          sendTextMessage(sender.id, "You now have Music/Video Privileges!");
-          setRights(sender, "dj");
-        }
-        break;
-      // case "darmok":
-      //   {
-      //     sendTextMessage(sender.id, "You now have Admin Privileges!");
-      //     setRights(sender, "admin");
-      //   }
-      //   break;
-      // case "kitty":
-      // case "kitties":
-      // case "show me the kitty":
-      // case "show me the kitties":
-      // case "cat":
-      // case "cats":
-      // case "show me the cats":
-      // case "show me the cat":
-      //   {
-      //     sendPictureMessage(sender, 'http://thecatapi.com/api/images/get?format=src&type=gif');
-      //   }
-      //   break;
-      // case "pleb":
-      //   {
-      //     sendTextMessage(sender.id, "You have been demoted to pleb status");
-      //     setRights(sender, "user");
-      //   }
-      //   break;
-      // case "play":
-      //   {
-      //   }
-      //   break;
-    }
+    return;
   }
 }
 
@@ -320,9 +285,7 @@ export function sendPictureMessage(sender: Sender, url: string) {
 }
 
 
-
-
-export function sendYoutubeMessage(sender: Sender, info : Splash) {
+export function sendLinkWithSplash(sender: Sender, info : Splash, verbiage : string) {
 
   var subtitle = info.subtitle || "",
       title = info.title || "",
@@ -354,7 +317,7 @@ export function sendYoutubeMessage(sender: Sender, info : Splash) {
                 {
                   "type":"web_url",
                   "url":info.link_url,
-                  "title":"Watch"
+                  "title": verbiage
                 }
               ]
             }
@@ -367,47 +330,6 @@ export function sendYoutubeMessage(sender: Sender, info : Splash) {
 }
 
 
-
-export function sendLinkWithSplash(sender: Sender, info : Splash) {
-
-  var subtitle = info.subtitle || "",
-      title = info.title || "",
-      fallback_url = info.fallback_url || "";
-
-  var messageData =
-  {
-  "recipient":{
-      "id": sender.id
-    },
-    "message":{
-      "attachment":{
-        "type":"template",
-        "payload":{
-          "template_type":"generic",
-          "elements":[
-             {
-              "title": title,
-              "image_url": info.image_url,
-              "subtitle": subtitle,
-              "default_action": {
-                "type": "web_url",
-                "url": info.link_url,
-                "messenger_extensions": true,
-                "webview_height_ratio": "tall",
-                "fallback_url": info.fallback_url
-              },
-              "buttons":[
-                {
-                  "type":"web_url",
-                  "url":info.link_url,
-                  "title":"Open"
-                }
-              ]
-            }
-          ]
-        }
-      }
-    }
-  }
-  callSendAPI(messageData);
+export function sendYoutubeMessage(sender: Sender, info : Splash) {
+  sendLinkWithSplash(sender, info, "watch");
 }

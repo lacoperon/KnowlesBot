@@ -71,12 +71,15 @@ export var CommandList : CommandList = {
         description: "sends link to GitHub repo",
         is_secret : false,
         do : function(messageText : string, sender : Sender) {
-          sendLinkWithSplash(sender, {
+
+          var info = {
             title: "KnowlesBot on GitHub",
             link_url: "https://github.com/lacoperon/KnowlesBot",
             subtitle: "Check it out!",
             image_url : "https://camo.githubusercontent.com/a51e8d412f84a4aa7b4ba9ac6d6731548ddd1caa/68747470733a2f2f63646e2e706978616261792e636f6d2f70686f746f2f323031372f30362f31352f31382f32332f706c756d6265722d323430363235345f3936305f3732302e706e67"
-          });
+          };
+
+          sendLinkWithSplash(sender, info , "open");
         }
       },
       "help" : {
