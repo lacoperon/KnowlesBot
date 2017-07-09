@@ -8,7 +8,7 @@ import {CommandList} from './commands';
 var commands = CommandList.commands;
 
 import {Sender, Recipient, Event, Message, QuickReply, Referral, Postback,
-        YoutubeSplash} from './messenger_types';
+        Splash} from './messenger_types';
 
 const APP_SECRET        = (process.env.APP_SECRET),
       VALIDATION_TOKEN  = (process.env.MESSENGER_VALIDATION_TOKEN),
@@ -215,9 +215,6 @@ export function parseMessage(messageText: string, sender: Sender): void {
           sendPictureMessage(sender, 'http://thecatapi.com/api/images/get?format=src&type=gif');
         }
         break;
-      case "wesley":
-        CommandList.commands.wesley.do(messageText, sender);
-        break;
       case "pleb":
         {
           sendTextMessage(sender.id, "You have been demoted to pleb status");
@@ -252,23 +249,6 @@ export function parseMessage(messageText: string, sender: Sender): void {
         break;
       case "hey":
         {
-          client.get(toState(sender), function(err, reply) {
-            if (!err) {
-              if (reply != null) {
-                console.log(`User with id ${sender.id} has state ${reply}`);
-                if (reply == "default") {
-                  sendTextMessage(sender.id, "Welcome back, friend! Remember you can type 'help' to see an updated list of commands");
-                } else if (reply == "new") {
-                  sendTextMessage(sender.id, "Welcome, newcomer! Type 'help' to see a list of commands");
-                  setState(sender, "default");
-                }
-              } else {
-                console.log(`User with id ${sender.id} appears to be new`);
-                sendTextMessage(sender.id, "Welcome, newcomer! Type 'help' to see a list of commands.'");
-                setState(sender, "default");
-              }
-            }
-          });
         }
         break;
     }
@@ -347,7 +327,7 @@ export function sendTextMessage(recipientId: string, messageText: string): void 
 }
 
 
-function sendPictureMessage(sender: Sender, url: string) {
+export function sendPictureMessage(sender: Sender, url: string) {
   var messageData = {
     recipient: {
       id: sender.id
@@ -368,7 +348,7 @@ function sendPictureMessage(sender: Sender, url: string) {
 
 
 
-export function sendYoutubeMessage(sender: Sender, info : YoutubeSplash) {
+export function sendYoutubeMessage(sender: Sender, info : Splash) {
 
   var subtitle = info.subtitle || "",
       title = info.title || "",
@@ -391,7 +371,7 @@ export function sendYoutubeMessage(sender: Sender, info : YoutubeSplash) {
               "subtitle":"Truly a Christmas Miracle",
               "default_action": {
                 "type": "web_url",
-                "url": info.youtube_url,
+                "url": info.link_url,
                 "messenger_extensions": true,
                 "webview_height_ratio": "tall",
                 "fallback_url": info.fallback_url
@@ -399,7 +379,7 @@ export function sendYoutubeMessage(sender: Sender, info : YoutubeSplash) {
               "buttons":[
                 {
                   "type":"web_url",
-                  "url":info.youtube_url,
+                  "url":info.link_url,
                   "title":"Watch"
                 }
               ]
@@ -409,6 +389,51 @@ export function sendYoutubeMessage(sender: Sender, info : YoutubeSplash) {
       }
     }
   }
+  callSendAPI(messageData);
+}
 
+
+
+export function sendLinkWithSplash(sender: Sender, info : Splash) {
+
+  var subtitle = info.subtitle || "",
+      title = info.title || "",
+      fallback_url = info.fallback_url || "";
+
+  var messageData =
+  {
+  "recipient":{
+      "id": sender.id
+    },
+    "message":{
+      "attachment":{
+        "type":"template",
+        "payload":{
+          "template_type":"generic",
+          "elements":[
+             {
+              "title": title,
+              "image_url": info.image_url,
+              "subtitle":"Truly a Christmas Miracle",
+              "default_action": {
+                "type": "web_url",
+                "url": info.link_url,
+                "messenger_extensions": true,
+                "webview_height_ratio": "tall",
+                "fallback_url": info.fallback_url
+              },
+              "buttons":[
+                {
+                  "type":"web_url",
+                  "url":info.link_url,
+                  "title":"Open"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
   callSendAPI(messageData);
 }

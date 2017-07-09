@@ -49,8 +49,8 @@ export interface Postback {
   referral : Referral;
 }
 
-export interface YoutubeSplash {
-  youtube_url : string;
+export interface Splash {
+  link_url : string;
   image_url : string;
   fallback_url? : string;
   title? : string;

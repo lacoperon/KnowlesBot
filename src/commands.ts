@@ -1,8 +1,11 @@
 import * as redis from 'redis';
 var client = redis.createClient(process.env.REDISCLOUD_URL);
-import {Sender, Recipient, Event, Message, QuickReply, Referral, Postback} from './messenger_types';
+import {Sender, Recipient, Event, Message, QuickReply, Referral, Postback}
+        from './messenger_types';
 import {sendTextMessage, callSendAPI, sendHelpMessage, sendYoutubeMessage,
-        toState, toRights, setState, setRights} from './messenger';
+        sendPictureMessage, sendLinkWithSplash, toState, toRights, setState,
+        setRights}
+        from './messenger';
 
 const APP_SECRET        = (process.env.APP_SECRET),
       VALIDATION_TOKEN  = (process.env.MESSENGER_VALIDATION_TOKEN),
@@ -48,11 +51,55 @@ export var CommandList : CommandList = {
           setState(sender, "new");
         }
       },
+      "github": {
+        description: "sends link to GitHub repo",
+        is_secret : false,
+        do : function(messageText : string, sender : Sender) {
+          sendLinkWithSplash(sender, {
+            title: "KnowlesBot on GitHub",
+            link_url: "https://github.com/lacoperon/KnowlesBot",
+            subtitle: "Check it out!",
+            image_url : "https://camo.githubusercontent.com/a51e8d412f84a4aa7b4ba9ac6d6731548ddd1caa/68747470733a2f2f63646e2e706978616261792e636f6d2f70686f746f2f323031372f30362f31352f31382f32332f706c756d6265722d323430363235345f3936305f3732302e706e67"
+          });
+        }
+      },
       "help" : {
         description: "sends help message",
         is_secret : false,
         do : function(messageText : string, sender : Sender) {
           sendHelpMessage(sender);
+        }
+      },
+      "hey" : {
+        description: "says hello (for the warm fuzzy feels)",
+        is_secret : false,
+        alts: ['hi','hello','howdy','heyy','heyyy','sup'],
+        do : function(messageText : string, sender: Sender) {
+          client.get(toState(sender), function(err, reply) {
+            if (!err) {
+              if (reply != null) {
+                console.log(`User with id ${sender.id} has state ${reply}`);
+                if (reply == "default") {
+                  sendTextMessage(sender.id, "Welcome back, friend! Remember you can type 'help' to see an updated list of commands");
+                } else if (reply == "new") {
+                  sendTextMessage(sender.id, "Welcome, newcomer! Type 'help' to see a list of commands");
+                  setState(sender, "default");
+                }
+              } else {
+                console.log(`User with id ${sender.id} appears to be new`);
+                sendTextMessage(sender.id, "Welcome, newcomer! Type 'help' to see a list of commands.'");
+                setState(sender, "default");
+              }
+            }
+          });
+        }
+      },
+      "kitty" : {
+        description: "sends kitty meme",
+        is_secret : false,
+        alts: ['kitty','kitties','cat','cats', 'show me the cat','show me the cats','show me the kitty', 'show me the kitties'],
+        do : function(messageText : string, sender : Sender) {
+          sendPictureMessage(sender, 'http://thecatapi.com/api/images/get?format=src&type=gif');
         }
       },
       "wesley" : {
@@ -64,7 +111,7 @@ export var CommandList : CommandList = {
             title: "Wesley Crusher gets Destroyed",
             image_url: "https://s-media-cache-ak0.pinimg.com/736x/2f/d1/6f/2fd16f6aa3e5721215d335dff48fdf34--wesley-crusher-star-wars.jpg",
             subtitle: "Truly a christmas miracle",
-            youtube_url : "https://youtu.be/sZt6eU5REN8"
+            link_url : "https://youtu.be/sZt6eU5REN8"
           });
         }
       },
