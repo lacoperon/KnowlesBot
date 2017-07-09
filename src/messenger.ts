@@ -172,7 +172,8 @@ export function parseMessage(messageText: string, sender: Sender): void {
           if(commands[command].hasOwnProperty('alts')) {
             console.log(`touch3 for ${command} has alts`)
             for( var alt in commands[command].alts)  {
-              if(alt == messageText) {
+              if(alt == messageText.trim().toLowerCase()) {
+                console.log(`touch4 for ${command} has ${alt} which is ${messageText}`);
                 commands.command.do(messageText, sender);
               }
             }
