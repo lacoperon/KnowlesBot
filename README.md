@@ -86,11 +86,11 @@ would run `heroku config:set MESSENGER_VALIDATION_TOKEN=hello`.
 #### External URL Whitelisting
 
 Facebook requires that you whitelist all domains you link to externally through your Facebook bot.
-If you do such a thing (IE in my 'wesley' function), you must whitelist it by running the following command
+If you do such a thing (IE in my 'wesley' function), you must whitelist it by running the following command in the terminal
 
 `curl -X POST -H "Content-Type: application/json" -d '{
   "setting_type" : "domain_whitelisting",
-  "whitelisted_domains" : ["https://examplesite.com"],
+  "whitelisted_domains" : ["https://examplesitetowhitelist.com"],
   "domain_action_type": "add"
 }' "https://graph.facebook.com/v2.6/me/thread_settings?access_token=PAGE_ACCESS_TOKEN"`
 
