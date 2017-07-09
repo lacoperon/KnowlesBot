@@ -147,12 +147,32 @@ export function verifyRequestSignature(req: any, res: any, buf: any): void {
 }
 
 export function parseMessage(messageText: string, sender: Sender): void {
-  if (messageText) {
+  //Splits messages on ;, allowing for multiple commands at once
+  if(messageText.indexOf(";") !== -1) {
+    var messageArray = messageText.split(";");
+    for (var message in messageArray) {
+      parseMessage(message, sender);
+    }
+    return;
+  }
+
+  if (messageText && messageText != "") {
+    messageText = messageText.trim().toLowerCase();
+    //Checks to see if the command 'messageText' is defined
     if(commands.hasOwnProperty(messageText)) {
       console.log("HAS PROPERTY");
       commands[messageText].do(messageText, sender);
+    } else {
+      for (var command in commands) {
+        if(commands.command.hasOwnProperty('alts')) {
+          for( var alt in commands.command.alts)
+            if(alt == messageText) {
+              commands.command.do(messageText, sender);
+            }
+        }
+      }
     }
-    switch (messageText.trim().toLowerCase()) {
+    switch (messageText) {
       case "help":
         {
           commands.help.  do(messageText, sender);
