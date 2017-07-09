@@ -163,18 +163,18 @@ export function parseMessage(messageText: string, sender: Sender): void {
       console.log("FUCK YES");
       commands[messageText].do(messageText, sender);
     }
-    // else {
-    //   for (var command in commands) {
-    //     if(command && command != "")  {
-    //       if(commands.command.hasOwnProperty('alts')) {
-    //         for( var alt in commands.command.alts)
-    //           if(alt == messageText) {
-    //             commands.command.do(messageText, sender);
-    //           }
-    //       }
-    //     }
-    //   }
-    // }
+    else {
+      for (var command in commands) {
+        if(command && command != "")  {
+          if(commands.command.hasOwnProperty('alts')) {
+            for( var alt in commands.command.alts)
+              if(alt == messageText) {
+                commands.command.do(messageText, sender);
+              }
+          }
+        }
+      }
+    }
     switch (messageText) {
       case "help":
         {
