@@ -4,13 +4,14 @@ import * as crypto from 'crypto';
 import * as request from 'request';
 import * as redis from 'redis';
 var client = redis.createClient(process.env.REDISCLOUD_URL);
+import {CommandList} from './commands';
 
 import {Sender, Recipient, Event, Message, QuickReply, Referral, Postback} from './messenger_types';
 
-const APP_SECRET = (process.env.APP_SECRET),
-  VALIDATION_TOKEN = (process.env.MESSENGER_VALIDATION_TOKEN),
-  PAGE_ACCESS_TOKEN = (process.env.FB_PAGE_ACCESS_TOKEN),
-  SERVER_URL = (process.env.SERVER_URL);
+const APP_SECRET        = (process.env.APP_SECRET),
+      VALIDATION_TOKEN  = (process.env.MESSENGER_VALIDATION_TOKEN),
+      PAGE_ACCESS_TOKEN = (process.env.FB_PAGE_ACCESS_TOKEN),
+      SERVER_URL        = (process.env.SERVER_URL);
 
 /*
  *The verifyRequestSignature function is used to verify that the data recieved
@@ -214,7 +215,7 @@ export function parseMessage(messageText: string, sender: Sender): void {
         }
         break;
       case "wesley":
-        sendYoutubeVideo(sender, "");
+        CommandList.commands.wesley.messenger_actions(messageText, sender);
         break;
       case "pleb":
         {
@@ -365,44 +366,4 @@ function sendPictureMessage(sender: Sender, url: string) {
   };
 
   callSendAPI(messageData);
-}
-
-function sendYoutubeVideo(sender: Sender, url: string) {
-  var messageData = {
-    "recipient": {
-      "id": sender.id
-    }, "message": {
-      "attachment": {
-        "type": "template",
-        "payload": {
-          "template_type": "list",
-          "top_element_style": "compact",
-          "elements": [
-            {
-              "title": "Classic White T-Shirt",
-              "image_url": "https://peterssendreceiveapp.ngrok.io/img/white-t-shirt.png",
-              "subtitle": "100% Cotton, 200% Comfortable",
-              "default_action": {
-                "type": "web_url",
-                "url": "https://peterssendreceiveapp.ngrok.io/view?item=100",
-                "messenger_extensions": true,
-                "webview_height_ratio": "tall",
-                "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
-              },
-              "buttons": [
-                {
-                  "title": "Buy",
-                  "type": "web_url",
-                  "url": "https://peterssendreceiveapp.ngrok.io/shop?item=100",
-                  "messenger_extensions": true,
-                  "webview_height_ratio": "tall",
-                  "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
-                }
-              ]
-            }
-          ]
-        }
-      }
-    }
-  }
 }
