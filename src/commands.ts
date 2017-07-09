@@ -50,16 +50,16 @@ export var CommandList : CommandList = {
                                   "webview_height_ratio": "tall",
                                   "fallback_url": "https://youtu.be/sZt6eU5REN8"
                               },
-                              // "buttons": [
-                              //     {
-                              //         "title": "View",
-                              //         "type": "web_url",
-                              //         "url": "https://peterssendreceiveapp.ngrok.io/collection",
-                              //         "messenger_extensions": true,
-                              //         "webview_height_ratio": "tall",
-                              //         "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
-                              //     }
-                              // ]
+                              "buttons": [
+                                  {
+                                      "title": "Watch",
+                                      "type": "web_url",
+                                      "url": "https://youtu.be/sZt6eU5REN8",
+                                      "messenger_extensions": true,
+                                      "webview_height_ratio": "tall",
+                                      "fallback_url": "https://youtu.be/sZt6eU5REN8"
+                                  }
+                              ]
                           }
                       ]
                   }
