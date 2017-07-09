@@ -166,7 +166,7 @@ export function parseMessage(messageText: string, sender: Sender): void {
     else {
       for (var command in commands) {
         if(command && command != "")  {
-          if(commands.command.hasOwnProperty('alts')) {
+          if(commands[command].hasOwnProperty('alts')) {
             for( var alt in commands.command.alts)
               if(alt == messageText) {
                 commands.command.do(messageText, sender);
