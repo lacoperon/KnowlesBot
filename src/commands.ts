@@ -182,22 +182,23 @@ export var CommandList : CommandList = {
               } else {
                 state = "default";
               }
-              sendTextMessage(sender.id, `You have State: ${state}`);
+
+              client.get(toRights(sender), function(err, reply) {
+                if (!err) {
+                  var position = "";
+                  if (reply) {
+                    position = reply.trim();
+                  } else {
+                    position = "default";
+                  }
+                  sendTextMessage(sender.id, `You have Role: ${position}, State: ${state}, Sender ID ${sender.id}`);
+                }
+              });
             }
           });
 
-          client.get(toRights(sender), function(err, reply) {
-            if (!err) {
-              var position = "";
-              if (reply) {
-                position = reply.trim();
-              } else {
-                position = "default";
-              }
-              sendTextMessage(sender.id, `You have Role: ${position}`);
-            }
-          });
-          sendTextMessage(sender.id, `You have Sender ID: ${sender.id}`);
+
+
       }}
     }
 }
