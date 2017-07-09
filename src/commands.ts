@@ -14,7 +14,7 @@ var sender : Sender ;
 
 
 interface Command {
-  alt? : string[];
+  alts? : string[];
   description : string;
   is_secret : boolean; // only accessible to admin
   do(messageText : string, sender : Sender) : void;
