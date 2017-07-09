@@ -5,6 +5,7 @@ import * as request from 'request';
 import * as redis from 'redis';
 var client = redis.createClient(process.env.REDISCLOUD_URL);
 import {CommandList} from './commands';
+var commands = CommandList.commands;
 
 import {Sender, Recipient, Event, Message, QuickReply, Referral, Postback,
         YoutubeSplash} from './messenger_types';
@@ -21,12 +22,12 @@ const APP_SECRET        = (process.env.APP_SECRET),
 
 
 // Function that converts a Sender object to its corresponding State string (for Redis)
-function toState(sender: Sender): string {
+export function toState(sender: Sender): string {
   return `STATE_${sender.id}`;
 }
 
 // Function that converts a Sender object to its corresponding Rights string (for Redis)
-function toRights(sender: Sender): string {
+export function toRights(sender: Sender): string {
   return `RIGHTS_${sender.id}`;
 }
 
@@ -147,44 +148,24 @@ export function verifyRequestSignature(req: any, res: any, buf: any): void {
 
 export function parseMessage(messageText: string, sender: Sender): void {
   if (messageText) {
+    if(commands.hasOwnProperty(messageText)) {
+      console.log("HAS PROPERTY");
+      commands[messageText].do(messageText, sender);
+    }
     switch (messageText.trim().toLowerCase()) {
       case "help":
         {
-          sendHelpMessage(sender);
+          commands.help.  do(messageText, sender);
         }
         break;
       case "whoami":
         {
-          client.get(toState(sender), function(err, reply) {
-            if (!err) {
-              var state = "";
-              if (reply) {
-                state = reply.trim();
-              } else {
-                state = "default";
-              }
-              sendTextMessage(sender.id, `You have State: ${state}`);
-            }
-          });
-
-          client.get(toRights(sender), function(err, reply) {
-            if (!err) {
-              var position = "";
-              if (reply) {
-                position = reply.trim();
-              } else {
-                position = "default";
-              }
-              sendTextMessage(sender.id, `You have Role: ${position}`);
-            }
-          });
-          sendTextMessage(sender.id, `You have Sender ID: ${sender.id}`);
+          commands.whoami.do(messageText, sender);
         }
         break;
       case "forget":
         {
-          sendTextMessage(sender.id, "Consider yourself forgotten!");
-          setState(sender, "new");
+          commands.forget.do(messageText, sender);
         }
         break;
       case "babadook":
@@ -299,13 +280,13 @@ export function receivedMessage(event: Event): void {
   parseMessage(message.text, event.sender);
 }
 
-function setState(sender: Sender, state: string): void {
+export function setState(sender: Sender, state: string): void {
   client.set(toState(sender), state, function() {
     console.log("Set the state of user " + sender.id + "to be " + state);
   });
 }
 
-function setRights(sender: Sender, position: string): void {
+export function setRights(sender: Sender, position: string): void {
   client.set(toRights(sender), position, function() {
     console.log("Set the rights of user " + sender.id + "to be " + position);
   });
