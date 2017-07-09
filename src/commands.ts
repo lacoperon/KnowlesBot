@@ -191,7 +191,7 @@ export var CommandList : CommandList = {
                   } else {
                     position = "default";
                   }
-                  sendTextMessage(sender.id, `You have Role: ${position}, State: ${state}, Sender ID ${sender.id}`);
+                  sendTextMessage(sender.id, `You have Role: ${position},\n State: ${state},\n Sender ID : ${sender.id}`);
                 }
               });
             }
