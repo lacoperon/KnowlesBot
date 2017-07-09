@@ -30,42 +30,40 @@ export var CommandList : CommandList = {
         is_secret : false,
         messenger_actions : function(messageText : string, sender : Sender) {
 
-          var messageData = {
-            "recipient":{
+          var messageData =
+          {
+          "recipient":{
               "id": sender.id
-            }, "message": {
-              "attachment": {
-                  "type": "template",
-                  "payload": {
-                      "template_type": "list",
-                      "elements": [
-                          {
-                              "title": "Wesley Crusher gets Destroyed in Christmas Song",
-                              "image_url": "https://s-media-cache-ak0.pinimg.com/736x/2f/d1/6f/2fd16f6aa3e5721215d335dff48fdf34--wesley-crusher-star-wars.jpg",
-                              "subtitle": "Click for Accompanying Jingle",
-                              "default_action": {
-                                  "type": "web_url",
-                                  "url": "https://youtu.be/sZt6eU5REN8",
-                                  "messenger_extensions": true,
-                                  "webview_height_ratio": "tall",
-                                  "fallback_url": "https://youtu.be/sZt6eU5REN8"
-                              },
-                              "buttons": [
-                                  {
-                                      "title": "Watch",
-                                      "type": "web_url",
-                                      "url": "https://youtu.be/sZt6eU5REN8",
-                                      "messenger_extensions": true,
-                                      "webview_height_ratio": "tall",
-                                      "fallback_url": "https://youtu.be/sZt6eU5REN8"
-                                  }
-                              ]
-                          }
+            },
+            "message":{
+              "attachment":{
+                "type":"template",
+                "payload":{
+                  "template_type":"generic",
+                  "elements":[
+                     {
+                      "title":"Wesley Crusher gets Destroyed",
+                      "image_url":"https://s-media-cache-ak0.pinimg.com/736x/2f/d1/6f/2fd16f6aa3e5721215d335dff48fdf34--wesley-crusher-star-wars.jpg",
+                      "subtitle":"Truly a Christmas Miracle",
+                      "default_action": {
+                        "type": "web_url",
+                        "url": "https://youtu.be/sZt6eU5REN8",
+                        "messenger_extensions": true,
+                        "webview_height_ratio": "tall",
+                        "fallback_url": "https://youtu.be/sZt6eU5REN8"
+                      },
+                      "buttons":[
+                        {
+                          "type":"web_url",
+                          "url":"https://youtu.be/sZt6eU5REN8",
+                          "title":"Watch"
+                        }
                       ]
-                  }
+                    }
+                  ]
+                }
               }
-          }
-
+            }
           }
 
           callSendAPI(messageData);
