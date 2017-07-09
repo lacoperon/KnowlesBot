@@ -159,10 +159,10 @@ export function parseMessage(messageText: string, sender: Sender): void {
   if (messageText && messageText != "") {
     messageText = messageText.trim().toLowerCase();
     //Checks to see if the command 'messageText' is defined
-    if(commands.hasOwnProperty(messageText)) {
-      console.log("HAS PROPERTY");
-      commands[messageText].do(messageText, sender);
-    }
+    // if(commands.hasOwnProperty(messageText)) {
+    //   console.log("HAS PROPERTY");
+    //   commands[messageText].do(messageText, sender);
+    // }
     // else {
     //   for (var command in commands) {
     //     if(command && command != "")  {
