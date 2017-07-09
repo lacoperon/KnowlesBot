@@ -90,7 +90,7 @@ If you do such a thing (IE in my 'wesley' function), you must whitelist it by ru
 
 `curl -X POST -H "Content-Type: application/json" -d '{
   "setting_type" : "domain_whitelisting",
-  "whitelisted_domains" : ["https://petersfancyapparel.com"],
+  "whitelisted_domains" : ["https://examplesite.com"],
   "domain_action_type": "add"
 }' "https://graph.facebook.com/v2.6/me/thread_settings?access_token=PAGE_ACCESS_TOKEN"`
 

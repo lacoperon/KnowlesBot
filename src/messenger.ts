@@ -162,6 +162,7 @@ export function parseMessage(messageText: string, sender: Sender): void {
     if(commands.hasOwnProperty(messageText)) {
       console.log("FUCK YES");
       commands[messageText].do(messageText, sender);
+      return;
     }
     else {
       console.log('touch');
@@ -196,11 +197,6 @@ export function parseMessage(messageText: string, sender: Sender): void {
         {
           sendTextMessage(sender.id, "You now have Admin Privileges!");
           setRights(sender, "admin");
-        }
-        break;
-      case "github":
-        {
-          sendTextMessage(sender.id, "https://github.com/lacoperon/KnowlesBot");
         }
         break;
       case "kitty":
@@ -245,10 +241,6 @@ export function parseMessage(messageText: string, sender: Sender): void {
               }
             }
           });
-        }
-        break;
-      case "hey":
-        {
         }
         break;
     }
@@ -368,7 +360,7 @@ export function sendYoutubeMessage(sender: Sender, info : Splash) {
              {
               "title": title,
               "image_url": info.image_url,
-              "subtitle":"Truly a Christmas Miracle",
+              "subtitle": subtitle,
               "default_action": {
                 "type": "web_url",
                 "url": info.link_url,
@@ -414,7 +406,7 @@ export function sendLinkWithSplash(sender: Sender, info : Splash) {
              {
               "title": title,
               "image_url": info.image_url,
-              "subtitle":"Truly a Christmas Miracle",
+              "subtitle": subtitle
               "default_action": {
                 "type": "web_url",
                 "url": info.link_url,
