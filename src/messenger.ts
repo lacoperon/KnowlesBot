@@ -162,13 +162,16 @@ export function parseMessage(messageText: string, sender: Sender): void {
     if(commands.hasOwnProperty(messageText)) {
       console.log("HAS PROPERTY");
       commands[messageText].do(messageText, sender);
-    } else {
+    }
+    else {
       for (var command in commands) {
-        if(commands.command.hasOwnProperty('alts')) {
-          for( var alt in commands.command.alts)
-            if(alt == messageText) {
-              commands.command.do(messageText, sender);
-            }
+        if(command && command != "")  {
+          if(commands.command.hasOwnProperty('alts')) {
+            for( var alt in commands.command.alts)
+              if(alt == messageText) {
+                commands.command.do(messageText, sender);
+              }
+          }
         }
       }
     }
