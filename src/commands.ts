@@ -58,6 +58,7 @@ export var CommandList : CommandList = {
       "wesley" : {
         description : "sends Wesley Crusher meme",
         is_secret : false,
+        alts: ['wc'],
         do : function(messageText : string, sender : Sender) {
           sendYoutubeMessage(sender, {
             title: "Wesley Crusher gets Destroyed",
