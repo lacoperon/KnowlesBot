@@ -41,6 +41,7 @@ function sendHelpMessage(sender: Sender): void {
     github: Returns link to this project on GitHub
     play  : Plays the specified Spotify Playlists (unimplemented)
     kitty : Sends a random cat GIF
+    wesley: Sends Wesley Crusher Video all should watch
     whoami: Returns your current state and rights status
 
     forget : makes the bot think you're a new user (for that welcome feeling)
