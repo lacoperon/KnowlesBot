@@ -171,10 +171,11 @@ export function parseMessage(messageText: string, sender: Sender): void {
           console.log(`touch2 for ${command} (parsed as not empty and not undef)`);
           if(commands[command].hasOwnProperty('alts')) {
             console.log(`touch3 for ${command} has alts`)
-            for( var alt in commands[command].alts)
+            for( var alt in commands[command].alts)  {
               if(alt == messageText) {
                 commands.command.do(messageText, sender);
               }
+            }
           }
         }
       }
