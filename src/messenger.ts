@@ -170,12 +170,12 @@ export function parseMessage(messageText: string, sender: Sender): void {
         if(command && command != "")  {
           console.log(`touch2 for ${command} (parsed as not empty and not undef)`);
           if(commands[command].hasOwnProperty('alts')) {
-            console.log(`touch3 for ${command} has alts`)
+            console.log(`touch3 for ${command} has alts`);
             console.log(`Alts contains ${JSON.stringify(commands[command].alts)}`);
-            for( var alt in commands[command].alts)  {
-              console.log(`touch3.5 for alt ${alt}`);
-              if(alt == messageText.trim().toLowerCase()) {
-                console.log(`touch4 for ${command} has ${alt} which is ${messageText}`);
+            for( var i in commands[command].alts)  {
+              console.log(`touch3.5 for alt at index ${i}`);
+              if(commands[command].alts[i] == messageText.trim().toLowerCase()) {
+                console.log(`touch4 for ${command} has alt at index ${i} which is ${messageText}`);
                 commands.command.do(messageText, sender);
               }
             }
