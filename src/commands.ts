@@ -88,7 +88,11 @@ export var CommandList : CommandList = {
         is_secret : false,
         do : function(messageText : string, sender : Sender) {
 
-          var listOfCommands = Object.keys(CommandList.commands).sort();
+          var listOfCommands = _.map(Object.keys(CommandList.commands), function(command) {
+            if (CommandList.commands[command].is_secret == false) {
+              return command;
+            }
+          } ).sort();
           sendTextMessage(sender.id, listOfCommands.toString());
           sendHelpMessage(sender);
         }
