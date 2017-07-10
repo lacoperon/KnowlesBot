@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 var client = redis.createClient(process.env.REDISCLOUD_URL);
 import {Sender, Recipient, Event, Message, QuickReply, Referral, Postback}
         from './messenger_types';
-import {sendTextMessage, callSendAPI, sendHelpMessage, sendYoutubeMessage,
+import {sendTextMessage, callSendAPI, sendYoutubeMessage,
         sendPictureMessage, sendLinkWithSplash, toState, toRights, setState,
         setRights}
         from './messenger';
@@ -117,8 +117,6 @@ export var CommandList : CommandList = {
           }
           //
           sendTextMessage(sender.id, helpDocs);
-          // sendTextMessage(sender.id, listOfCommands.toString());
-          sendHelpMessage(sender);
         }
       },
       "hey" : {
