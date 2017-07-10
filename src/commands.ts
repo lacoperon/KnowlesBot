@@ -48,7 +48,7 @@ export var CommandList : CommandList = {
         description: "promotes to DJ (#BILAND)",
         is_secret: true,
         do: function(messageText : string, sender : Sender) {
-          sendTextMessage(sender.id, "You now have Music/Video Privileges!");
+          sendTextMessage(sender, "You now have Music/Video Privileges!");
           setRights(sender, "dj");
         }
       },
@@ -56,7 +56,7 @@ export var CommandList : CommandList = {
         description: "promotes to admin (good episode!)",
         is_secret : true,
         do : function(messageText : string, sender : Sender) {
-          sendTextMessage(sender.id, "You now have Admin Privileges!");
+          sendTextMessage(sender, "You now have Admin Privileges!");
           setRights(sender, "admin");
         }
       },
@@ -64,7 +64,7 @@ export var CommandList : CommandList = {
         description: "makes the bot 'forget' you",
         is_secret : false,
         do : function(messageText : string, sender : Sender) {
-          sendTextMessage(sender.id, "Consider yourself forgotten!");
+          sendTextMessage(sender, "Consider yourself forgotten!");
           setState(sender, "new");
         }
       },
@@ -110,13 +110,13 @@ export var CommandList : CommandList = {
               console.log(`Adding ${CommandList.commands[command].description} to helpDocs`);
               helpDocs += `${command}: ${CommandList.commands[command].description}\n`;
               if(helpDocs.length > 500) {
-                sendTextMessage(sender.id, helpDocs);
+                sendTextMessage(sender, helpDocs);
                 helpDocs = '';
               }
             }
           }
           //
-          sendTextMessage(sender.id, helpDocs);
+          sendTextMessage(sender, helpDocs);
         }
       },
       "hey" : {
@@ -129,14 +129,14 @@ export var CommandList : CommandList = {
               if (reply != null) {
                 console.log(`User with id ${sender.id} has state ${reply}`);
                 if (reply == "default") {
-                  sendTextMessage(sender.id, "Welcome back, friend! Remember you can type 'help' to see an updated list of commands");
+                  sendTextMessage(sender, "Welcome back, friend! Remember you can type 'help' to see an updated list of commands");
                 } else if (reply == "new") {
-                  sendTextMessage(sender.id, "Welcome, newcomer! Type 'help' to see a list of commands");
+                  sendTextMessage(sender, "Welcome, newcomer! Type 'help' to see a list of commands");
                   setState(sender, "default");
                 }
               } else {
                 console.log(`User with id ${sender.id} appears to be new`);
-                sendTextMessage(sender.id, "Welcome, newcomer! Type 'help' to see a list of commands.'");
+                sendTextMessage(sender, "Welcome, newcomer! Type 'help' to see a list of commands.'");
                 setState(sender, "default");
               }
             }
@@ -162,13 +162,13 @@ export var CommandList : CommandList = {
                   case "dj":
                   case "admin":
                     {
-                      sendTextMessage(sender.id, "Sorry DJ, Music isn't yet implemented");
+                      sendTextMessage(sender, "Sorry DJ, Music isn't yet implemented");
                     }
                     break;
                   case "user":
                   default:
                     {
-                      sendTextMessage(sender.id, "Sorry, you don't have music privileges");
+                      sendTextMessage(sender, "Sorry, you don't have music privileges");
                     }
                     break;
                 }
@@ -183,7 +183,7 @@ export var CommandList : CommandList = {
         description: "demotes user to pleb",
         is_secret : true,
         do : function(messageText : string, sender : Sender) {
-          sendTextMessage(sender.id, "You have been demoted to pleb status");
+          sendTextMessage(sender, "You have been demoted to pleb status");
           setRights(sender, "user");
         }
       },
@@ -221,7 +221,7 @@ export var CommandList : CommandList = {
                   } else {
                     position = "default";
                   }
-                  sendTextMessage(sender.id, `You have Role: ${position}, State: ${state}, Sender ID ${sender.id}`);
+                  sendTextMessage(sender, `You have \nRole: ${position},\nState: ${state},\nSender ID ${sender.id}`);
                 }
               });
             }
