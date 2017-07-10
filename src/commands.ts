@@ -95,20 +95,23 @@ export var CommandList : CommandList = {
           } ).sort();
 
           listOfCommands = _.without(listOfCommands, undefined);
+          listOfCommands = _.without(listOfCommands, "");
+          console.log(listOfCommands.toString());
 
 
-          var helpDocs : string = `Command List:\n`;
-          for (var command in listOfCommands) {
-            if(CommandList.commands[command].description) {
-              console.log(`Adding ${CommandList.commands[command].description} to helpDocs`);
-              helpDocs += `${command}: ${CommandList.commands[command].description}\n`;
-              if(helpDocs.length > 500) {
-                sendTextMessage(sender.id, helpDocs);
-                helpDocs = '';
-              }
-            }
-          }
-          sendTextMessage(sender.id, helpDocs);
+          // var helpDocs : string = `Command List:\n`;
+          // for (var command in listOfCommands) {
+          //   if(CommandList.commands[command].description) {
+          //     console.log(`Adding ${CommandList.commands[command].description} to helpDocs`);
+          //     helpDocs += `${command}: ${CommandList.commands[command].description}\n`;
+          //     if(helpDocs.length > 500) {
+          //       sendTextMessage(sender.id, helpDocs);
+          //       helpDocs = '';
+          //     }
+          //   }
+          // }
+          //
+          // sendTextMessage(sender.id, helpDocs);
           sendTextMessage(sender.id, listOfCommands.toString());
           sendHelpMessage(sender);
         }
