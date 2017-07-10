@@ -100,7 +100,7 @@ export var CommandList : CommandList = {
 
 
 
-          var helpDocs : string = `Command List:\n`;
+          var helpDocs : string = `Command List:\n\n`;
           for (var commandIndex in listOfCommands) {
             var command = listOfCommands[commandIndex];
             console.log(command);
@@ -122,7 +122,7 @@ export var CommandList : CommandList = {
         }
       },
       "hey" : {
-        description: "Sends you greetings (for fuzzy feels)",
+        description: "sends you greetings (for fuzzy feels)",
         is_secret : false,
         alts: ['hi','hello','howdy','heyy','heyyy','sup'],
         do : function(messageText : string, sender: Sender) {

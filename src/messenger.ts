@@ -32,71 +32,6 @@ export function toRights(sender: Sender): string {
 }
 
 /*
- * Send a Structured Message using the Send API.
- *
- */
-export function sendHelpMessage(sender: Sender): void {
-  var messageTextUser =
-    `Common Commands Include:
-
-    hey   : Sends you a hello message (for the warm fuzzy feels)
-    github: Returns link to this project on GitHub
-    play  : Plays the specified Spotify Playlists (unimplemented)
-    kitty : Sends a random cat GIF
-    wesley: Sends Wesley Crusher Video all should watch
-    whoami: Returns your current state and rights status
-
-    forget : makes the bot think you're a new user (for that welcome feeling)
-    help   : returns a list of all supported commands`
-
-  var messageTextAdmin =
-    `Admin Commands:
-
-     darmok  : sets oneself as admin (good episode!)
-     babadook: sets oneself as DJ (play music/video as you please)
-     pleb    : demotes oneself to pleb status (no more admin/DJ access)
-
-
-     `;
-
-  var messageData = {
-    recipient: {
-      id: sender.id
-    },
-    message: {
-      "text": messageTextUser,
-      "quick_replies": [
-        {
-          "content_type": "text",
-          "title": "kitty",
-          "payload": "kitty"
-        },
-        {
-          "content_type": "text",
-          "title": "whoami",
-          "payload": "whoami"
-        }
-      ]
-    }
-  };
-
-  client.get(toRights(sender), function(err, reply) {
-    if (!err) {
-      if (reply) {
-        switch (reply.trim().toLowerCase()) {
-          case "admin":
-            sendTextMessage(sender.id, messageTextAdmin);
-            break;
-          default:
-            break;
-        }
-      }
-      callSendAPI(messageData);
-    }
-  });
-}
-
-/*
 * Call the Send API. The message data goes in the body. If successful, we'll
 * get the message id in a response
 *
@@ -331,5 +266,5 @@ export function sendLinkWithSplash(sender: Sender, info : Splash, verbiage : str
 
 
 export function sendYoutubeMessage(sender: Sender, info : Splash) {
-  sendLinkWithSplash(sender, info, "watch");
+  sendLinkWithSplash(sender, info, "Watch");
 }
