@@ -116,8 +116,8 @@ export var CommandList : CommandList = {
             }
           }
           //
-          // sendTextMessage(sender.id, helpDocs);
-          sendTextMessage(sender.id, listOfCommands.toString());
+          sendTextMessage(sender.id, helpDocs);
+          // sendTextMessage(sender.id, listOfCommands.toString());
           sendHelpMessage(sender);
         }
       },
