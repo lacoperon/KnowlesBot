@@ -101,17 +101,18 @@ export var CommandList : CommandList = {
 
 
           var helpDocs : string = `Command List:\n`;
-          for (var command in listOfCommands) {
+          for (var commandIndex in listOfCommands) {
+            var command = listOfCommands[commandIndex];
             console.log(command);
 
             if(CommandList.commands[command] && CommandList.commands[command].description) {
               console.log("Description");
-          //     console.log(`Adding ${CommandList.commands[command].description} to helpDocs`);
-          //     helpDocs += `${command}: ${CommandList.commands[command].description}\n`;
-          //     if(helpDocs.length > 500) {
-          //       sendTextMessage(sender.id, helpDocs);
-          //       helpDocs = '';
-          //     }
+              console.log(`Adding ${CommandList.commands[command].description} to helpDocs`);
+              helpDocs += `${command}: ${CommandList.commands[command].description}\n`;
+              if(helpDocs.length > 500) {
+                sendTextMessage(sender.id, helpDocs);
+                helpDocs = '';
+              }
             }
           }
           //
