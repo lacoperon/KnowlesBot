@@ -1,4 +1,5 @@
 import * as redis from 'redis';
+import * as _ from 'lodash';
 var client = redis.createClient(process.env.REDISCLOUD_URL);
 import {Sender, Recipient, Event, Message, QuickReply, Referral, Postback}
         from './messenger_types';
@@ -44,7 +45,7 @@ export var CommandList : CommandList = {
      -@lacoperon */
   commands :
     { "babadook" : {
-        description: "promotes user to DJ status (LONG LIVE THE BILAND)",
+        description: "promotes to DJ (#BILAND)",
         is_secret: true,
         do: function(messageText : string, sender : Sender) {
           sendTextMessage(sender.id, "You now have Music/Video Privileges!");
@@ -52,7 +53,7 @@ export var CommandList : CommandList = {
         }
       },
       "darmok" : {
-        description: "promotes the user to admin status (good episode!)",
+        description: "promotes to admin (good episode!)",
         is_secret : true,
         do : function(messageText : string, sender : Sender) {
           sendTextMessage(sender.id, "You now have Admin Privileges!");
@@ -60,7 +61,7 @@ export var CommandList : CommandList = {
         }
       },
       "forget" : {
-        description: "'forgets' user ever messaged the bot",
+        description: "makes the bot 'forget' you",
         is_secret : false,
         do : function(messageText : string, sender : Sender) {
           sendTextMessage(sender.id, "Consider yourself forgotten!");
@@ -86,11 +87,14 @@ export var CommandList : CommandList = {
         description: "sends help message",
         is_secret : false,
         do : function(messageText : string, sender : Sender) {
+
+          var listOfCommands = Object.keys(CommandList.commands).sort();
+          sendTextMessage(sender.id, listOfCommands.toString());
           sendHelpMessage(sender);
         }
       },
       "hey" : {
-        description: "says hello (for the warm fuzzy feels)",
+        description: "Sends you greetings (for fuzzy feels)",
         is_secret : false,
         alts: ['hi','hello','howdy','heyy','heyyy','sup'],
         do : function(messageText : string, sender: Sender) {
@@ -150,7 +154,7 @@ export var CommandList : CommandList = {
         }
       },
       "pleb" : {
-        description: "demotes user to plebian status",
+        description: "demotes user to pleb",
         is_secret : true,
         do : function(messageText : string, sender : Sender) {
           sendTextMessage(sender.id, "You have been demoted to pleb status");
@@ -158,7 +162,7 @@ export var CommandList : CommandList = {
         }
       },
       "wesley" : {
-        description : "sends Wesley Crusher meme",
+        description : "sends WC meme",
         is_secret : false,
         alts: ['wc'],
         do : function(messageText : string, sender : Sender) {
@@ -171,7 +175,7 @@ export var CommandList : CommandList = {
         }
       },
       "whoami" : {
-        description: "sends user their State, FB UserID and Role",
+        description: "returns user params",
         is_secret : false,
         do : function(messageText : string, sender : Sender) {
           client.get(toState(sender), function(err, reply) {
