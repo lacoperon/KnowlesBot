@@ -99,17 +99,21 @@ export var CommandList : CommandList = {
           console.log(listOfCommands.toString());
 
 
-          // var helpDocs : string = `Command List:\n`;
-          // for (var command in listOfCommands) {
-          //   if(CommandList.commands[command].description) {
+
+          var helpDocs : string = `Command List:\n`;
+          for (var command in listOfCommands) {
+            console.log(command);
+
+            if(CommandList.commands[command] && CommandList.commands[command].description) {
+              console.log("Description");
           //     console.log(`Adding ${CommandList.commands[command].description} to helpDocs`);
           //     helpDocs += `${command}: ${CommandList.commands[command].description}\n`;
           //     if(helpDocs.length > 500) {
           //       sendTextMessage(sender.id, helpDocs);
           //       helpDocs = '';
           //     }
-          //   }
-          // }
+            }
+          }
           //
           // sendTextMessage(sender.id, helpDocs);
           sendTextMessage(sender.id, listOfCommands.toString());
