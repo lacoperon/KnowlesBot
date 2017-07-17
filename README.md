@@ -5,7 +5,8 @@
 Welcome to the KnowlesBot README! KnowlesBot is a **Facebook Messenger Bot** that I developed
 for my roommate and I to more effectively manage living together slash the day to day things we want to do. The messenger server back end is deployed using Heroku,
 but there are also other components that will work through a **Raspberry Pi**
-(IE Spotify + Netflix + Youtube integration).=
+(IE Spotify + Netflix + Youtube integration).
+
 <img src="https://cdn.pixabay.com/photo/2017/06/15/18/23/plumber-2406254_960_720.png" data-canonical-src="https://gyazo.com/eb5c5741b6a9a16c692170a41a49c858.png" width="400" height="400" />
 
 Also, the communication functions interfacing with the FB Messenger API were mostly
