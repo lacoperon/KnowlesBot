@@ -1,8 +1,9 @@
 import * as redis from 'redis';
+import * as _ from 'lodash';
 var client = redis.createClient(process.env.REDISCLOUD_URL);
 import {Sender, Recipient, Event, Message, QuickReply, Referral, Postback}
         from './messenger_types';
-import {sendTextMessage, callSendAPI, sendHelpMessage, sendYoutubeMessage,
+import {sendTextMessage, callSendAPI, sendYoutubeMessage,
         sendPictureMessage, sendLinkWithSplash, toState, toRights, setState,
         setRights}
         from './messenger';
@@ -44,26 +45,26 @@ export var CommandList : CommandList = {
      -@lacoperon */
   commands :
     { "babadook" : {
-        description: "promotes user to DJ status (LONG LIVE THE BILAND)",
+        description: "promotes to DJ (#BILAND)",
         is_secret: true,
         do: function(messageText : string, sender : Sender) {
-          sendTextMessage(sender.id, "You now have Music/Video Privileges!");
+          sendTextMessage(sender, "You now have Music/Video Privileges!");
           setRights(sender, "dj");
         }
       },
       "darmok" : {
-        description: "promotes the user to admin status (good episode!)",
+        description: "promotes to admin (good episode!)",
         is_secret : true,
         do : function(messageText : string, sender : Sender) {
-          sendTextMessage(sender.id, "You now have Admin Privileges!");
+          sendTextMessage(sender, "You now have Admin Privileges!");
           setRights(sender, "admin");
         }
       },
       "forget" : {
-        description: "'forgets' user ever messaged the bot",
+        description: "makes the bot 'forget' you",
         is_secret : false,
         do : function(messageText : string, sender : Sender) {
-          sendTextMessage(sender.id, "Consider yourself forgotten!");
+          sendTextMessage(sender, "Consider yourself forgotten!");
           setState(sender, "new");
         }
       },
@@ -86,11 +87,40 @@ export var CommandList : CommandList = {
         description: "sends help message",
         is_secret : false,
         do : function(messageText : string, sender : Sender) {
-          sendHelpMessage(sender);
+
+          var listOfCommands = _.map(Object.keys(CommandList.commands), function(command) {
+            if (CommandList.commands[command].is_secret == false) {
+              return command;
+            }
+          } ).sort();
+
+          listOfCommands = _.without(listOfCommands, undefined);
+          listOfCommands = _.without(listOfCommands, "");
+          console.log(listOfCommands.toString());
+
+
+
+          var helpDocs : string = `Command List:\n\n`;
+          for (var commandIndex in listOfCommands) {
+            var command = listOfCommands[commandIndex];
+            console.log(command);
+
+            if(CommandList.commands[command] && CommandList.commands[command].description) {
+              console.log("Description");
+              console.log(`Adding ${CommandList.commands[command].description} to helpDocs`);
+              helpDocs += `${command}: ${CommandList.commands[command].description}\n`;
+              if(helpDocs.length > 500) {
+                sendTextMessage(sender, helpDocs);
+                helpDocs = '';
+              }
+            }
+          }
+          //
+          sendTextMessage(sender, helpDocs);
         }
       },
       "hey" : {
-        description: "says hello (for the warm fuzzy feels)",
+        description: "sends you greetings (for fuzzy feels)",
         is_secret : false,
         alts: ['hi','hello','howdy','heyy','heyyy','sup'],
         do : function(messageText : string, sender: Sender) {
@@ -99,14 +129,14 @@ export var CommandList : CommandList = {
               if (reply != null) {
                 console.log(`User with id ${sender.id} has state ${reply}`);
                 if (reply == "default") {
-                  sendTextMessage(sender.id, "Welcome back, friend! Remember you can type 'help' to see an updated list of commands");
+                  sendTextMessage(sender, "Welcome back, friend! Remember you can type 'help' to see an updated list of commands");
                 } else if (reply == "new") {
-                  sendTextMessage(sender.id, "Welcome, newcomer! Type 'help' to see a list of commands");
+                  sendTextMessage(sender, "Welcome, newcomer! Type 'help' to see a list of commands");
                   setState(sender, "default");
                 }
               } else {
                 console.log(`User with id ${sender.id} appears to be new`);
-                sendTextMessage(sender.id, "Welcome, newcomer! Type 'help' to see a list of commands.'");
+                sendTextMessage(sender, "Welcome, newcomer! Type 'help' to see a list of commands.'");
                 setState(sender, "default");
               }
             }
@@ -132,13 +162,13 @@ export var CommandList : CommandList = {
                   case "dj":
                   case "admin":
                     {
-                      sendTextMessage(sender.id, "Sorry DJ, Music isn't yet implemented");
+                      sendTextMessage(sender, "Sorry DJ, Music isn't yet implemented");
                     }
                     break;
                   case "user":
                   default:
                     {
-                      sendTextMessage(sender.id, "Sorry, you don't have music privileges");
+                      sendTextMessage(sender, "Sorry, you don't have music privileges");
                     }
                     break;
                 }
@@ -150,15 +180,15 @@ export var CommandList : CommandList = {
         }
       },
       "pleb" : {
-        description: "demotes user to plebian status",
+        description: "demotes user to pleb",
         is_secret : true,
         do : function(messageText : string, sender : Sender) {
-          sendTextMessage(sender.id, "You have been demoted to pleb status");
+          sendTextMessage(sender, "You have been demoted to pleb status");
           setRights(sender, "user");
         }
       },
       "wesley" : {
-        description : "sends Wesley Crusher meme",
+        description : "sends WC meme",
         is_secret : false,
         alts: ['wc'],
         do : function(messageText : string, sender : Sender) {
@@ -171,7 +201,7 @@ export var CommandList : CommandList = {
         }
       },
       "whoami" : {
-        description: "sends user their State, FB UserID and Role",
+        description: "returns user params",
         is_secret : false,
         do : function(messageText : string, sender : Sender) {
           client.get(toState(sender), function(err, reply) {
@@ -191,7 +221,7 @@ export var CommandList : CommandList = {
                   } else {
                     position = "default";
                   }
-                  sendTextMessage(sender.id, `You have Role: ${position},\n State: ${state},\n Sender ID : ${sender.id}`);
+                  sendTextMessage(sender, `You have \nRole: ${position},\nState: ${state},\nSender ID ${sender.id}`);
                 }
               });
             }

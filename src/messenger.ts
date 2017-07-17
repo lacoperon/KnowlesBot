@@ -32,71 +32,6 @@ export function toRights(sender: Sender): string {
 }
 
 /*
- * Send a Structured Message using the Send API.
- *
- */
-export function sendHelpMessage(sender: Sender): void {
-  var messageTextUser =
-    `Common Commands Include:
-
-    hey   : Sends you a hello message (for the warm fuzzy feels)
-    github: Returns link to this project on GitHub
-    play  : Plays the specified Spotify Playlists (unimplemented)
-    kitty : Sends a random cat GIF
-    wesley: Sends Wesley Crusher Video all should watch
-    whoami: Returns your current state and rights status
-
-    forget : makes the bot think you're a new user (for that welcome feeling)
-    help   : returns a list of all supported commands`
-
-  var messageTextAdmin =
-    `Admin Commands:
-
-     darmok  : sets oneself as admin (good episode!)
-     babadook: sets oneself as DJ (play music/video as you please)
-     pleb    : demotes oneself to pleb status (no more admin/DJ access)
-
-
-     `;
-
-  var messageData = {
-    recipient: {
-      id: sender.id
-    },
-    message: {
-      "text": messageTextUser,
-      "quick_replies": [
-        {
-          "content_type": "text",
-          "title": "kitty",
-          "payload": "kitty"
-        },
-        {
-          "content_type": "text",
-          "title": "whoami",
-          "payload": "whoami"
-        }
-      ]
-    }
-  };
-
-  client.get(toRights(sender), function(err, reply) {
-    if (!err) {
-      if (reply) {
-        switch (reply.trim().toLowerCase()) {
-          case "admin":
-            sendTextMessage(sender.id, messageTextAdmin);
-            break;
-          default:
-            break;
-        }
-      }
-      callSendAPI(messageData);
-    }
-  });
-}
-
-/*
 * Call the Send API. The message data goes in the body. If successful, we'll
 * get the message id in a response
 *
@@ -189,7 +124,7 @@ export function parseMessage(messageText: string, sender: Sender): void {
         }
       }
     }
-    sendTextMessage(sender.id, "Sorry, I didn't understand what you were saying. Type 'help' to see a list of commands");
+    sendTextMessage(sender, "Sorry, I didn't understand what you were saying. Type 'help' to see a list of commands");
     return;
   }
 }
@@ -245,17 +180,17 @@ export function receivedPostback(event: Event): void {
     "at %d", sender.id, recipientID, payload, timeOfPostback);
   // When a postback is called, we'll send a message back to the sender to
   // let them know it was successful
-  sendTextMessage(sender.id, "Postback called");
+  sendTextMessage(sender, "Postback called");
 }
 
 /*
 * Send a text message using the Send API.
 *
 */
-export function sendTextMessage(recipientId: string, messageText: string): void {
+export function sendTextMessage(sender: Sender, messageText: string): void {
   var messageData = {
     recipient: {
-      id: recipientId
+      id: sender.id
     },
     message: {
       text: messageText,
@@ -264,6 +199,8 @@ export function sendTextMessage(recipientId: string, messageText: string): void 
   };
   callSendAPI(messageData);
 }
+
+// export function sendTextMessageWithQuickReply(recipientId: string)
 
 
 export function sendPictureMessage(sender: Sender, url: string) {
@@ -331,5 +268,5 @@ export function sendLinkWithSplash(sender: Sender, info : Splash, verbiage : str
 
 
 export function sendYoutubeMessage(sender: Sender, info : Splash) {
-  sendLinkWithSplash(sender, info, "watch");
+  sendLinkWithSplash(sender, info, "Watch");
 }
