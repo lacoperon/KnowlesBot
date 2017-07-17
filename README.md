@@ -26,7 +26,7 @@ out exactly what I want to build, and setting up Continuous Integration and Buil
   * Timers and Reminders
   * Video streaming via **VLC** through command line on **Raspberry Pi** via **Chromecast**
   * **Netflix** streaming through **Tasker** and **Google Chrome** via **Chromecast**
-  * **Spotify** streaming through **Mopidy** and **Bluetooth**
+  * **Spotify** streaming through **Mopidy** and **Chromecast Audio**
   * Weird, idiosyncratic things (like Wesley Crusher Memes, etc.)
   * Shopping Lists (probably through **Redis**, for lightweight storage that
     easily expires -- I don't care if I wanted to get milk 6 weeks ago)
@@ -36,12 +36,16 @@ out exactly what I want to build, and setting up Continuous Integration and Buil
   * Ability to query when certain establishments are open (IE ION Restaurant and
     Weshop in my use case, at Wesleyan University).
 
-For the more personal details (IE where my roommate or I are at any point in
-  time, or what we're up to, or to access our video/audio smart home functionalities),
-  I'm going to implement some sort of Authentication based on ID (IE Chris or
-    I can set the friends that are able to do different things), probably in **Redis**, and then the
-    users will either be able to do the action, or will get a dialogue saying that
-    the action itself cannot be completed.
+### Spin Off Ideas
+
+I was thinking about perhaps spinning the Message Bot framework code I wrote (super readable + modular,
+within commands.ts) into multiple other projects, like a Animal-based bot that sends you GIFs, Pet Info
+and encourages people to donate to the SPCA, and a Singing-centric bot which keeps track of a group's
+repertoire (alongside who sings what parts), so that one can see, given a gig where X people can
+come (queried through the bot), what songs we can sing, how long our set will be, and who needs to
+learn what to make our group more resilient towards missing one or two key members.
+
+TLDR will happen later, but I'm in a good position to do it right.
 
 ### Setup
 
