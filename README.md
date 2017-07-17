@@ -1,4 +1,4 @@
- # KnowlesBot ![Build Status](https://travis-ci.org/lacoperon/KnowlesBot.svg?branch=master "Build Status") <a href="https://messenger.com/t/KnowlesHelper"><img src="https://img.labnol.org/di/facebook-messenger.png" width=25% /></a>
+ # KnowlesBot ![Build Status](https://travis-ci.org/lacoperon/KnowlesBot.svg?branch=master "Build Status") <a href="https://messenger.com/t/KnowlesHelper"><img src="https://cdn2.tnwcdn.com/wp-content/blogs.dir/1/files/2016/04/facebook-messenger.jpg" width=25% /></a>
 
 
 
