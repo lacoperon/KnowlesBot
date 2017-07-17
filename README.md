@@ -1,4 +1,4 @@
-# KnowlesBot ![Build Status](https://travis-ci.org/lacoperon/KnowlesBot.svg?branch=master "Build Status")
+ # KnowlesBot ![Build Status](https://travis-ci.org/lacoperon/KnowlesBot.svg?branch=master "Build Status") <a href="https://messenger.com/t/KnowlesHelper"><img src="https://img.labnol.org/di/facebook-messenger.png" width=25% /></a>
 
 
 
@@ -20,7 +20,7 @@ out exactly what I want to build, and setting up Continuous Integration and Buil
 
 ### Implemented Stuff
   * Role / State tracking via Redis
-  * Kitty Image Sending (TODO: Add an RNG component, sending more than one type of Kitty)
+  * Kitty Image Sending
   * Secret Functions to Promote People to Different Roles (IE DJ, Admin)
   * whoami function to give your state, role and Facebook ID
 
